@@ -40,7 +40,6 @@ export const RegistrationScreen = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    width: 400,
     height: 549,
     alignItems: "center",
     justifyContent: "flex-end",
