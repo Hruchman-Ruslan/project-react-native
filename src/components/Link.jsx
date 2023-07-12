@@ -18,12 +18,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "center",
     gap: 4,
-    marginTop: 16,
-    paddingBottom: 78,
   },
   text: {
     fontFamily: "rb-regular",
     fontSize: 16,
     color: "#1B4371",
+    fontWeight: "700",
   },
 });

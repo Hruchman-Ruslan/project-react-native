@@ -1,15 +1,17 @@
 import { KeyboardAvoidingView, Platform, Keyboard } from "react-native";
 import React, { useState, useEffect } from "react";
 
-export const KeyboardWrapper = ({ children }) => {
-  const [keyboardStatus, setKeyboardStatus] = useState(70);
+export const KeyboardWrapper = ({ children, screenType }) => {
+  const [keyboardStatus, setKeyboardStatus] = useState(0);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-      setKeyboardStatus(0);
+      if (screenType === "Registration") setKeyboardStatus(79);
+      if (screenType === "Login") setKeyboardStatus(500);
     });
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      setKeyboardStatus(70);
+      if (screenType === "Registration") setKeyboardStatus(0);
+      if (screenType === "Login") setKeyboardStatus(0);
     });
 
     return () => {
@@ -21,7 +23,11 @@ export const KeyboardWrapper = ({ children }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "height"}
-      style={{ paddingTop: keyboardStatus, width: "100%" }}
+      style={{
+        paddingTop: keyboardStatus,
+        width: "100%",
+        justifyContent: "center",
+      }}
     >
       {children}
     </KeyboardAvoidingView>

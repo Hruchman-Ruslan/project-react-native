@@ -9,15 +9,16 @@ export const ShowPassword = () => {
 };
 
 const styles = StyleSheet.create({
-  // wrapper: {
-  //   position: "absolute",
-  //   top: 303,
-  //   left: 278,
-  // },
+  wrapper: {
+    position: "absolute",
+    bottom: 30,
+    right: 16,
+  },
   text: {
     color: "#1B4371",
     textAlign: "right",
     fontFamily: "rb-regular",
     fontSize: 16,
+    fontWeight: "700",
   },
 });

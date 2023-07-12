@@ -28,9 +28,7 @@ export const Input = ({ defaultText }) => {
 
 const styles = StyleSheet.create({
   input: {
-    width: 343,
     height: 50,
-    flexShrink: 0,
     borderRadius: 8,
     paddingLeft: 16,
     paddingHorizontal: 16,
@@ -39,6 +37,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 16,
     backgroundColor: "#F6F6F6",
+    fontWeight: "700",
   },
   inputFocus: {
     backgroundColor: "transparent",

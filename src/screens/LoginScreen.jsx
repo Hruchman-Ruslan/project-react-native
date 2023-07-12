@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Title } from "../components/Title";
@@ -6,31 +5,25 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { StatusBar } from "expo-status-bar";
 import { Link } from "../components/Link";
-import { AddPhoto } from "../components/AddPhoto";
-import { KeyboardWrapper } from "../components/Keyboard";
 import { Background } from "../components/Background";
+import { KeyboardWrapper } from "../components/KeyboardWrapper";
 import { ShowPassword } from "../components/ShowPassword";
 
-export const RegistrationScreen = () => {
+export const LoginScreen = () => {
   return (
     <Background>
-      <KeyboardWrapper>
+      <KeyboardWrapper screenType="Login">
         <SafeAreaView style={styles.wrapper}>
-          <AddPhoto />
-          <Title title={"Registration"} />
+          <Title title={"Sign in"} />
 
           <View style={styles.wrapperInput}>
-            <Input defaultText={"Login"} />
             <Input defaultText={"Email"} />
             <Input defaultText={"Password"} />
-          </View>
-
-          <View style={styles.wrapperPassword}>
             <ShowPassword />
           </View>
 
-          <Button title={"Register"} />
-          <Link title={"Already have an account?"} access={"Sign In"} />
+          <Button title={"Sign in"} />
+          <Link title={"Don't have an account?"} access={"Register"} />
         </SafeAreaView>
       </KeyboardWrapper>
       <StatusBar style="auto" />
@@ -40,21 +33,17 @@ export const RegistrationScreen = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: 549,
-    alignItems: "center",
-    justifyContent: "flex-end",
+    height: 489,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: "#FFF",
-    paddingTop: 78,
+
+    paddingTop: 32,
+    paddingHorizontal: 16,
+    paddingBottom: 144,
   },
   wrapperInput: {
-    marginTop: 16,
+    marginBottom: 27,
     gap: 16,
-  },
-  wrapperPassword: {
-    position: "absolute",
-    top: 303,
-    left: 300,
   },
 });
