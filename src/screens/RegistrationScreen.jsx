@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Title } from "../components/Title";
@@ -12,6 +12,12 @@ import { Background } from "../components/Background";
 import { ShowPassword } from "../components/ShowPassword";
 
 export const RegistrationScreen = () => {
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+  const handleTogglePassword = () => {
+    setPasswordVisible(!isPasswordVisible);
+  };
+
   return (
     <Background>
       <KeyboardWrapper screenType="Registration">
@@ -22,8 +28,11 @@ export const RegistrationScreen = () => {
           <View style={{ width: "100%", marginBottom: 27, gap: 16 }}>
             <Input defaultText={"Login"} />
             <Input defaultText={"Email"} />
-            <Input defaultText={"Password"} access={true} />
-            <ShowPassword />
+            <Input defaultText={"Password"} access={!isPasswordVisible} />
+            <ShowPassword
+              isPasswordVisible={isPasswordVisible}
+              onTogglePassword={handleTogglePassword}
+            />
           </View>
 
           <Button title={"Register"} />
@@ -40,7 +49,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: "#FFF",
-    paddingTop: 92,
+    paddingTop: 60,
     paddingHorizontal: 16,
     paddingBottom: 50,
     alignItems: "center",
