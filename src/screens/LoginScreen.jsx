@@ -16,9 +16,9 @@ export const LoginScreen = () => {
         <SafeAreaView style={styles.wrapper}>
           <Title title={"Sign in"} />
 
-          <View style={styles.wrapperInput}>
+          <View style={{ width: "100%", marginBottom: 27, gap: 16 }}>
             <Input defaultText={"Email"} />
-            <Input defaultText={"Password"} />
+            <Input defaultText={"Password"} access={true} />
             <ShowPassword />
           </View>
 
@@ -33,17 +33,12 @@ export const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: 489,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: "#FFF",
-
     paddingTop: 32,
     paddingHorizontal: 16,
     paddingBottom: 144,
-  },
-  wrapperInput: {
-    marginBottom: 27,
-    gap: 16,
+    alignItems: "center",
   },
 });

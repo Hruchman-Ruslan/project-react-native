@@ -12,17 +12,18 @@ export const Button = ({ title }) => {
 
 const styles = StyleSheet.create({
   button: {
+    width: "100%",
     paddingVertical: 16,
     paddingHorizontal: 32,
+    marginBottom: 16,
     borderRadius: 100,
     backgroundColor: "#FF6C00",
-    marginBottom: 16,
   },
   buttonText: {
-    color: "#FFF",
-    textAlign: "center",
     fontFamily: "rb-regular",
     fontSize: 16,
     fontWeight: "700",
+    textAlign: "center",
+    color: "#FFF",
   },
 });

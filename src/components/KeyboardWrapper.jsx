@@ -7,7 +7,7 @@ export const KeyboardWrapper = ({ children, screenType }) => {
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
       if (screenType === "Registration") setKeyboardStatus(79);
-      if (screenType === "Login") setKeyboardStatus(500);
+      if (screenType === "Login") setKeyboardStatus(50);
     });
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
       if (screenType === "Registration") setKeyboardStatus(0);

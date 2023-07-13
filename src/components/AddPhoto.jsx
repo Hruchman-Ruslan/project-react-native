@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
   wrapper: {
     position: "absolute",
     top: -60,
-    left: 128,
 
     width: 132,
     height: 120,

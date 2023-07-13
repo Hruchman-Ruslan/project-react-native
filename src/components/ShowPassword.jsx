@@ -1,9 +1,16 @@
+import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 export const ShowPassword = () => {
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+  const handleTogglePassword = () => {
+    setPasswordVisible(!isPasswordVisible);
+  };
+
   return (
-    <TouchableOpacity style={styles.wrapper}>
-      <Text style={styles.text}>Show</Text>
+    <TouchableOpacity style={styles.wrapper} onPress={handleTogglePassword}>
+      <Text style={styles.text}>{isPasswordVisible ? "Hide" : "Show"}</Text>
     </TouchableOpacity>
   );
 };

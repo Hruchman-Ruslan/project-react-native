@@ -19,10 +19,10 @@ export const RegistrationScreen = () => {
           <AddPhoto />
           <Title title={"Registration"} />
 
-          <View style={styles.wrapperInput}>
+          <View style={{ width: "100%", marginBottom: 27, gap: 16 }}>
             <Input defaultText={"Login"} />
             <Input defaultText={"Email"} />
-            <Input defaultText={"Password"} />
+            <Input defaultText={"Password"} access={true} />
             <ShowPassword />
           </View>
 
@@ -37,16 +37,12 @@ export const RegistrationScreen = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: 549,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: "#FFF",
     paddingTop: 92,
     paddingHorizontal: 16,
-    paddingBottom: 113,
-  },
-  wrapperInput: {
-    marginBottom: 27,
-    gap: 16,
+    paddingBottom: 50,
+    alignItems: "center",
   },
 });
