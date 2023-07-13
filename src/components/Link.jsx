@@ -1,13 +1,10 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export const Link = ({ title, access }) => {
+export const Link = ({ title }) => {
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity>
         <Text style={styles.text}>{title}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Text style={styles.text}>{access}</Text>
       </TouchableOpacity>
     </View>
   );

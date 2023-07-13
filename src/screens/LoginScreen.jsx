@@ -23,7 +23,7 @@ export const LoginScreen = () => {
           </View>
 
           <Button title={"Sign in"} />
-          <Link title={"Don't have an account?"} access={"Register"} />
+          <Link title={"Don't have an account? Register"} />
         </SafeAreaView>
       </KeyboardWrapper>
       <StatusBar style="auto" />
