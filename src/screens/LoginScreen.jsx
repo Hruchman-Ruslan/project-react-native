@@ -8,8 +8,15 @@ import { Link } from "../components/Link";
 import { Background } from "../components/Background";
 import { KeyboardWrapper } from "../components/KeyboardWrapper";
 import { ShowPassword } from "../components/ShowPassword";
+import { useState } from "react";
 
 export const LoginScreen = () => {
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+  const handleTogglePassword = () => {
+    setPasswordVisible(!isPasswordVisible);
+  };
+
   return (
     <Background>
       <KeyboardWrapper screenType="Login">
@@ -18,8 +25,11 @@ export const LoginScreen = () => {
 
           <View style={{ width: "100%", marginBottom: 27, gap: 16 }}>
             <Input defaultText={"Email"} />
-            <Input defaultText={"Password"} access={true} />
-            <ShowPassword />
+            <Input defaultText={"Password"} access={!isPasswordVisible} />
+            <ShowPassword
+              isPasswordVisible={isPasswordVisible}
+              onTogglePassword={handleTogglePassword}
+            />
           </View>
 
           <Button title={"Sign in"} />
