@@ -2,11 +2,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export const Link = ({ title }) => {
   return (
-    <View style={styles.wrapper}>
-      <TouchableOpacity>
-        <Text style={styles.text}>{title}</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity style={styles.wrapper}>
+      <Text style={styles.text}>{title}</Text>
+    </TouchableOpacity>
   );
 };
 
