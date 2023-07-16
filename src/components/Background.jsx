@@ -1,14 +1,21 @@
-import { ImageBackground, StyleSheet } from "react-native";
+import {
+  ImageBackground,
+  Keyboard,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from "react-native";
 
 export const Background = ({ children }) => {
   return (
-    <ImageBackground
-      source={require("../assets/images/bg.png")}
-      resizeMode="cover"
-      style={styles.image}
-    >
-      {children}
-    </ImageBackground>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ImageBackground
+        source={require("../assets/images/bg.png")}
+        resizeMode="cover"
+        style={styles.image}
+      >
+        {children}
+      </ImageBackground>
+    </TouchableWithoutFeedback>
   );
 };
 

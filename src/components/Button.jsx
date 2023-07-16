@@ -1,8 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-export const Button = ({ title }) => {
-  const handleClick = () => console.log("Hello");
-
+export const Button = ({ title, handleClick }) => {
   return (
     <TouchableOpacity style={styles.button} onPress={handleClick}>
       <Text style={styles.buttonText}>{title}</Text>
