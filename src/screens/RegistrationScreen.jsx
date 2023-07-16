@@ -30,7 +30,7 @@ export const RegistrationScreen = () => {
 
   return (
     <Background>
-      <KeyboardWrapper screenType="Registration">
+      <KeyboardWrapper>
         <SafeAreaView style={styles.wrapper}>
           <AddPhoto />
           <Title title={"Registration"} />
