@@ -1,4 +1,4 @@
-import { StyleSheet, View, Alert } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Title } from "../components/Title";
 import { Input } from "../components/Input";
@@ -20,16 +20,18 @@ export const LoginScreen = () => {
   };
 
   const handleClickButton = () => {
-    Alert.alert("Credentials", `${email} + ${password}`);
+    Alert.alert("Credentials", ` ${email} + ${password}`);
+    setEmail("");
+    setPassword("");
   };
 
   return (
     <Background>
-      <KeyboardWrapper screenType="Login">
+      <KeyboardWrapper>
         <SafeAreaView style={styles.wrapper}>
           <Title title={"Sign in"} />
 
-          <View style={{ width: "100%", marginBottom: 27, gap: 16 }}>
+          <View style={styles.inputWrapper}>
             <Input defaultText={"Email"} text={email} setText={setEmail} />
             <Input
               defaultText={"Password"}
@@ -57,9 +59,14 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: "#FFF",
-    paddingTop: 32,
+    paddingTop: 90,
     paddingHorizontal: 16,
-    paddingBottom: 144,
+    paddingBottom: 50,
     alignItems: "center",
+  },
+  inputWrapper: {
+    width: "100%",
+    marginBottom: 27,
+    gap: 16,
   },
 });

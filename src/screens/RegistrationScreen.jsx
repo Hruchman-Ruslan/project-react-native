@@ -23,6 +23,9 @@ export const RegistrationScreen = () => {
 
   const handleClickButton = () => {
     Alert.alert("Credentials", `${login} + ${email} + ${password}`);
+    setLogin("");
+    setEmail("");
+    setPassword("");
   };
 
   return (
@@ -32,7 +35,7 @@ export const RegistrationScreen = () => {
           <AddPhoto />
           <Title title={"Registration"} />
 
-          <View style={{ width: "100%", marginBottom: 27, gap: 16 }}>
+          <View style={styles.inputWrapper}>
             <Input defaultText={"Login"} text={login} setText={setLogin} />
             <Input defaultText={"Email"} text={email} setText={setEmail} />
             <Input
@@ -61,9 +64,14 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: "#FFF",
-    paddingTop: 60,
+    paddingTop: 90,
     paddingHorizontal: 16,
     paddingBottom: 50,
     alignItems: "center",
+  },
+  inputWrapper: {
+    width: "100%",
+    marginBottom: 27,
+    gap: 16,
   },
 });

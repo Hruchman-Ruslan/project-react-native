@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#212121",
     textAlign: "center",
-    textShadowColor: "rgba(0, 0, 0, 0.25)",
+    textShadowColor: "#0000003f",
     textShadowOffset: { width: 0, height: 4 },
     textShadowRadius: 4,
     fontFamily: "rb-bold",
