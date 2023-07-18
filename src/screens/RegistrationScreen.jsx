@@ -11,7 +11,7 @@ import { KeyboardWrapper } from "../components/KeyboardWrapper";
 import { Background } from "../components/Background";
 import { ShowPassword } from "../components/ShowPassword";
 
-export const RegistrationScreen = () => {
+export default function RegistrationScreen() {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
@@ -57,7 +57,7 @@ export const RegistrationScreen = () => {
       <StatusBar style="auto" />
     </Background>
   );
-};
+}
 
 const styles = StyleSheet.create({
   wrapper: {
