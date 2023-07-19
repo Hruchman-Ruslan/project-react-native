@@ -1,4 +1,5 @@
 import { Alert, StyleSheet, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Title } from "../components/Title";
 import { Input } from "../components/Input";
@@ -9,13 +10,12 @@ import { Background } from "../components/Background";
 import { KeyboardWrapper } from "../components/KeyboardWrapper";
 import { ShowPassword } from "../components/ShowPassword";
 import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 
 export default function LoginScreen() {
-  const navigation = useNavigation();
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
 
   const handleTogglePassword = () => {
     setPasswordVisible(!isPasswordVisible);
@@ -25,6 +25,10 @@ export default function LoginScreen() {
     Alert.alert("Credentials", ` ${email} + ${password}`);
     setEmail("");
     setPassword("");
+  };
+
+  const handleClickOnText = () => {
+    navigation.navigate("RegistrationScreen");
   };
 
   return (
@@ -47,12 +51,11 @@ export default function LoginScreen() {
             />
           </View>
 
-          <Button
-            title={"Sign in"}
-            handleClick={handleClickButton}
-            onPress={() => navigation.navigate("Login")}
+          <Button title={"Sign in"} handleClick={handleClickButton} />
+          <Link
+            title={"Don't have an account? Register"}
+            handleClickOnText={handleClickOnText}
           />
-          <Link title={"Don't have an account? Register"} />
         </SafeAreaView>
       </KeyboardWrapper>
       <StatusBar style="auto" />

@@ -1,8 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-export const Link = ({ title }) => {
+export const Link = ({ title, handleClickOnText }) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={handleClickOnText}>
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );

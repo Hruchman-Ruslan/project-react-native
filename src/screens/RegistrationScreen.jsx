@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Title } from "../components/Title";
@@ -16,6 +17,7 @@ export default function RegistrationScreen() {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
 
   const handleTogglePassword = () => {
     setPasswordVisible(!isPasswordVisible);
@@ -26,6 +28,10 @@ export default function RegistrationScreen() {
     setLogin("");
     setEmail("");
     setPassword("");
+  };
+
+  const handleClickOnText = () => {
+    navigation.navigate("LoginScreen");
   };
 
   return (
@@ -51,7 +57,10 @@ export default function RegistrationScreen() {
           </View>
 
           <Button title={"Register"} handleClick={handleClickButton} />
-          <Link title={"Already have an account? Sign In"} />
+          <Link
+            title={"Already have an account? Sign In"}
+            handleClickOnText={handleClickOnText}
+          />
         </SafeAreaView>
       </KeyboardWrapper>
       <StatusBar style="auto" />
