@@ -25,6 +25,7 @@ export default function LoginScreen() {
     Alert.alert("Credentials", ` ${email} + ${password}`);
     setEmail("");
     setPassword("");
+    navigation.navigate("Home");
   };
 
   const handleClickOnText = () => {
