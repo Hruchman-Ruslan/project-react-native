@@ -28,7 +28,7 @@ export default function RegistrationScreen() {
     setLogin("");
     setEmail("");
     setPassword("");
-    navigation.navigate("Home");
+    // navigation.navigate("PostsScreen");
   };
 
   const handleClickOnText = () => {

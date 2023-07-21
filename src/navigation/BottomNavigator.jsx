@@ -1,12 +1,11 @@
-import { View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import PostsScreen from "./PostsScreen";
-import CreatePostsScreen from "./CreatePostsScreen";
-import ProfileScreen from "./ProfileScreen";
+import PostsScreen from "../screens/PostsScreen";
+import CreatePostsScreen from "../screens/CreatePostsScreen";
+import ProfileScreen from "../screens/PostsScreen";
 
 const Tab = createBottomTabNavigator();
 
-const Home = () => {
+const BottomNavigator = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen name="PostsScreen" component={PostsScreen} />
@@ -16,4 +15,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default BottomNavigator;
