@@ -11,6 +11,7 @@ import { AddPhoto } from "../components/AddPhoto";
 import { KeyboardWrapper } from "../components/KeyboardWrapper";
 import { Background } from "../components/Background";
 import { ShowPassword } from "../components/ShowPassword";
+import BottomNavigator from "../navigation/BottomNavigator";
 
 export default function RegistrationScreen() {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -28,7 +29,7 @@ export default function RegistrationScreen() {
     setLogin("");
     setEmail("");
     setPassword("");
-    // navigation.navigate("PostsScreen");
+    navigation.navigate("BottomNavigator");
   };
 
   const handleClickOnText = () => {

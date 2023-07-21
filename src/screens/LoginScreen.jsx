@@ -25,7 +25,7 @@ export default function LoginScreen() {
     Alert.alert("Credentials", ` ${email} + ${password}`);
     setEmail("");
     setPassword("");
-    // navigation.navigate("PostsScreen");
+    navigation.navigate("BottomNavigator");
   };
 
   const handleClickOnText = () => {
