@@ -6,39 +6,55 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from "react-native";
 
 const CreatePostsScreen = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.wrapperImage}>
-        <Image
-          style={styles.image}
-          source={require("../assets/images/rectangle-image.jpg")}
-        />
-        <TouchableOpacity style={styles.wrapperIcon}>
-          <SimpleLineIcons name="camera" size={24} color="#BDBDBD" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.wrapperText}>
-        <Text style={styles.text}>Upload a photo</Text>
-      </View>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
+        <View style={styles.wrapperImage}>
+          <Image
+            style={styles.image}
+            source={require("../assets/images/rectangle-image.jpg")}
+          />
+          <TouchableOpacity style={styles.wrapperIcon}>
+            <SimpleLineIcons name="camera" size={24} color="#BDBDBD" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.wrapperText}>
+          <Text style={styles.text}>Upload a photo</Text>
+        </View>
 
-      <View style={styles.wrapperInput}>
-        <TextInput style={styles.inputName} placeholder={"Name..."} />
-        <Feather name="map-pin" size={24} color="#BDBDBD" style={styles.icon} />
-        <TextInput style={styles.inputLocality} placeholder={"Locality..."} />
+        <View style={styles.wrapperInput}>
+          <TextInput style={styles.inputName} placeholder={"Name..."} />
+          <Feather
+            name="map-pin"
+            size={24}
+            color="#BDBDBD"
+            style={styles.icon}
+          />
+          <TextInput style={styles.inputLocality} placeholder={"Locality..."} />
+        </View>
+        <TouchableOpacity style={styles.wrapperButton}>
+          <Text style={styles.buttonText}>Publish</Text>
+        </TouchableOpacity>
+        <View style={styles.wrapperBoxDelete}>
+          <TouchableOpacity style={styles.wrapperIconDelete}>
+            <Feather name="trash-2" size={24} color="#BDBDBD" />
+          </TouchableOpacity>
+        </View>
       </View>
-      <TouchableOpacity style={styles.wrapperButton}>
-        <Text style={styles.buttonText}>Publish</Text>
-      </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
 export default CreatePostsScreen;
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     paddingHorizontal: 15,
@@ -103,6 +119,7 @@ const styles = StyleSheet.create({
   wrapperButton: {
     paddingVertical: 16,
     paddingHorizontal: 32,
+    marginBottom: 60,
 
     borderRadius: 100,
     backgroundColor: "#FF6C00",
@@ -113,5 +130,18 @@ const styles = StyleSheet.create({
     fontFamily: "rb-regular",
     fontSize: 16,
     fontWeight: 700,
+  },
+  wrapperIconDelete: {
+    width: 70,
+    height: 40,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 20,
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  wrapperBoxDelete: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

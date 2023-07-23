@@ -54,11 +54,12 @@ const BottomNavigator = () => {
               color="#212121"
               style={{ paddingLeft: 16 }}
               onPress={() => {
-                navigation.navigate("PostsScreen");
+                navigation.navigate("Posts Screen");
               }}
             />
           ),
           tabBarShowLabel: false,
+          tabBarStyle: { display: "none" },
         }}
       />
       <Tab.Screen
@@ -75,7 +76,7 @@ const BottomNavigator = () => {
               color="#212121"
               style={{ paddingLeft: 16 }}
               onPress={() => {
-                navigation.navigate("PostsScreen");
+                navigation.navigate("Posts Screen");
               }}
             />
           ),
