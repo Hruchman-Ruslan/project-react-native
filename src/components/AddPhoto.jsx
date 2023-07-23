@@ -1,13 +1,11 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 export const AddPhoto = () => {
   return (
-    <View style={styles.wrapper}>
-      <TouchableOpacity>
-        <AntDesign name="pluscircleo" size={25} style={styles.icon} />
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity style={styles.wrapper}>
+      <AntDesign name="pluscircleo" size={25} style={styles.icon} />
+    </TouchableOpacity>
   );
 };
 

@@ -11,7 +11,6 @@ import { AddPhoto } from "../components/AddPhoto";
 import { KeyboardWrapper } from "../components/KeyboardWrapper";
 import { Background } from "../components/Background";
 import { ShowPassword } from "../components/ShowPassword";
-import BottomNavigator from "../navigation/BottomNavigator";
 
 export default function RegistrationScreen() {
   const [isPasswordVisible, setPasswordVisible] = useState(false);

@@ -4,7 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import LoginScreen from "../screens/LoginScreen";
 import BottomNavigator from "./BottomNavigator";
-import { Feather } from "@expo/vector-icons";
 
 const MainStack = createStackNavigator();
 
