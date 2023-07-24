@@ -69,18 +69,8 @@ const BottomNavigator = () => {
           tabBarIcon: ({ size, color }) => (
             <Feather name="user" size={size} color={color} />
           ),
-          headerLeft: () => (
-            <Feather
-              name="arrow-left"
-              size={24}
-              color="#212121"
-              style={{ paddingLeft: 16 }}
-              onPress={() => {
-                navigation.navigate("Posts Screen");
-              }}
-            />
-          ),
           tabBarShowLabel: false,
+          headerShown: false,
         }}
       />
     </Tab.Navigator>
