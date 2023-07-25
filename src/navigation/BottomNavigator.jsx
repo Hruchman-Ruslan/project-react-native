@@ -3,8 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 import PostsScreen from "../screens/PostsScreen";
 import CreatePostsScreen from "../screens/CreatePostsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import { SimpleLineIcons, Feather, AntDesign } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native";
+import { SimpleLineIcons, Feather, Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity, View } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,16 +14,35 @@ const BottomNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarStyle: { height: 70, paddingVertical: 10 },
+        tabBarStyle: {
+          height: 70,
+          paddingVertical: 10,
+        },
         headerTitleAlign: "center",
+        tabBarInactiveTintColor: "#BDBDBD",
       }}
     >
       <Tab.Screen
         name="Posts Screen"
         component={PostsScreen}
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <SimpleLineIcons name="grid" size={size} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                width: 70,
+                height: 40,
+                backgroundColor: focused ? "#FF6C00" : "transparent",
+                borderRadius: 20,
+                padding: 8,
+              }}
+            >
+              <SimpleLineIcons
+                name="grid"
+                size={24}
+                color="#BDBDBD"
+                style={{ alignSelf: "center" }}
+              />
+            </View>
           ),
           tabBarShowLabel: false,
           headerRight: () => (
@@ -44,8 +63,23 @@ const BottomNavigator = () => {
         name="Create Posts Screen"
         component={CreatePostsScreen}
         options={{
-          tabBarIcon: () => (
-            <AntDesign name="pluscircle" size={40} color="#FF6C00" />
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                width: 70,
+                height: 40,
+                backgroundColor: focused ? "#FF6C00" : "transparent",
+                borderRadius: 20,
+                padding: 8,
+              }}
+            >
+              <Ionicons
+                name="add"
+                size={24}
+                color="#BDBDBD"
+                style={{ alignSelf: "center" }}
+              />
+            </View>
           ),
           headerLeft: () => (
             <Feather
@@ -66,8 +100,23 @@ const BottomNavigator = () => {
         name="Profile Screen"
         component={ProfileScreen}
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <Feather name="user" size={size} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                width: 70,
+                height: 40,
+                backgroundColor: focused ? "#FF6C00" : "transparent",
+                borderRadius: 20,
+                padding: 8,
+              }}
+            >
+              <Feather
+                name="user"
+                size={24}
+                color="#BDBDBD"
+                style={{ alignSelf: "center" }}
+              />
+            </View>
           ),
           tabBarShowLabel: false,
           headerShown: false,

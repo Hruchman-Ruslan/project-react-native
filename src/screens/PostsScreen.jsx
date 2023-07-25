@@ -1,53 +1,71 @@
+import React from "react";
+import { View, Text, StyleSheet, Image, FlatList } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+
+const DATA = [
+  {
+    id: "1",
+    image: require("../assets/images/rectangle-image.jpg"),
+    text: "Forest",
+    feedback: 8,
+    location: "Ivano-Frankivs'k Region, Ukraine",
+  },
+  {
+    id: "2",
+    image: require("../assets/images/rectangle-2.jpg"),
+    text: "Sunset on the Black Sea",
+    feedback: 3,
+    location: "Ukraine",
+  },
+];
 
 const PostsScreen = () => {
-  return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
-        <View style={styles.wrapperUser}>
-          <View style={styles.wrapperAvatar}>
-            <Image source={require("../assets/images/rectangle.jpg")} />
-          </View>
-          <View style={styles.wrapperText}>
-            <Text style={styles.loginText}>Natali Romanova</Text>
-            <Text style={styles.emailText}>email@example.com</Text>
-          </View>
+  const renderItem = ({ item }) => (
+    <>
+      <View style={styles.wrapperImage}>
+        <Image style={styles.image} source={item.image} />
+      </View>
+      <View style={styles.wrapperImageName}>
+        <Text style={styles.imageNameText}>{item.text}</Text>
+      </View>
+      <View style={styles.wrapperFeedback}>
+        <View style={styles.wrapperPosts}>
+          <Feather name="message-circle" size={24} color="#BDBDBD" />
+          <Text style={styles.feedbackNumber}>{item.feedback}</Text>
         </View>
-        <View style={styles.wrapperImage}>
-          <Image
-            style={styles.image}
-            source={require("../assets/images/rectangle-image.jpg")}
+        <View style={styles.wrapperLocation}>
+          <Feather
+            name="map-pin"
+            size={24}
+            color="#BDBDBD"
+            style={styles.feedbackLocationIcon}
           />
-        </View>
-        <View style={styles.wrapperImageName}>
-          <Text style={styles.imageNameText}>Forest</Text>
-        </View>
-        <View style={styles.wrapperFeedback}>
-          <View style={styles.wrapperPosts}>
-            <Feather name="message-circle" size={24} color="#BDBDBD" />
-            <Text style={styles.feedbackNumber}>0</Text>
-          </View>
-          <View style={styles.wrapperLocation}>
-            <Feather
-              name="map-pin"
-              size={24}
-              color="#BDBDBD"
-              style={styles.feedbackLocationIcon}
-            />
-            <Text style={styles.feedbackLocationText}>
-              Ivano-Frankivs'k Region, Ukraine
-            </Text>
-          </View>
-        </View>
-        <View style={styles.wrapperImage}>
-          <Image
-            style={styles.image}
-            source={require("../assets/images/rectangle-2.jpg")}
-          />
+          <Text style={styles.feedbackLocationText}>{item.location}</Text>
         </View>
       </View>
-    </ScrollView>
+    </>
+  );
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.wrapperUser}>
+        <View style={styles.wrapperAvatar}>
+          <Image source={require("../assets/images/rectangle.jpg")} />
+        </View>
+        <View style={styles.wrapperText}>
+          <Text style={styles.loginText}>Natali Romanova</Text>
+          <Text style={styles.emailText}>email@example.com</Text>
+        </View>
+      </View>
+
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 };
 
@@ -58,7 +76,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    paddingVertical: 32,
+    paddingTop: 32,
     backgroundColor: "white",
   },
   wrapperUser: {
