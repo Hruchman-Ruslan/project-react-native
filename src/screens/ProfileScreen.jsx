@@ -38,49 +38,85 @@ const DATA = [
   },
 ];
 
-const ProfileScreen = () => {
+const renderItem = ({ item }) => {
+  return (
+    <>
+      <View style={styles.wrapperImage}>
+        <Image style={styles.image} source={item.image} />
+      </View>
+      <View style={styles.wrapperImageName}>
+        <Text style={styles.imageNameText}>{item.text}</Text>
+      </View>
+      <View style={styles.wrapperFeedback}>
+        <View style={styles.box}>
+          <View style={styles.wrapperPosts}>
+            <Feather
+              name="message-circle"
+              size={24}
+              color="#FF6C00"
+              style={styles.feedbackIcon}
+            />
+            <Text style={styles.feedbackNumber}>{item.messageCount}</Text>
+          </View>
+          <View style={styles.wrapperPosts}>
+            <Feather name="thumbs-up" size={24} color="#FF6C00" />
+            <Text style={styles.feedbackNumber}>{item.likesCount}</Text>
+          </View>
+        </View>
+
+        <View style={styles.wrapperLocation}>
+          <Feather
+            name="map-pin"
+            size={24}
+            color="#BDBDBD"
+            style={styles.feedbackLocationIcon}
+          />
+          <Text style={styles.feedbackLocationText}>{item.location}</Text>
+        </View>
+      </View>
+    </>
+  );
+};
+
+const Header = () => {
   const navigation = useNavigation();
 
-  const renderItem = ({ item }) => {
-    return (
-      <>
-        <View style={styles.wrapperImage}>
-          <Image style={styles.image} source={item.image} />
-        </View>
-        <View style={styles.wrapperImageName}>
-          <Text style={styles.imageNameText}>{item.text}</Text>
-        </View>
-        <View style={styles.wrapperFeedback}>
-          <View style={styles.box}>
-            <View style={styles.wrapperPosts}>
-              <Feather
-                name="message-circle"
-                size={24}
-                color="#FF6C00"
-                style={styles.feedbackIcon}
-              />
-              <Text style={styles.feedbackNumber}>{item.messageCount}</Text>
-            </View>
-            <View style={styles.wrapperPosts}>
-              <Feather name="thumbs-up" size={24} color="#FF6C00" />
-              <Text style={styles.feedbackNumber}>{item.likesCount}</Text>
-            </View>
-          </View>
+  return (
+    <>
+      <View style={styles.wrapperUser}>
+        <Image
+          source={require("../assets/images/rectangle.png")}
+          style={styles.imageUser}
+        />
+        <TouchableOpacity style={styles.wrapperIcon}>
+          <EvilIcons
+            name="close"
+            size={24}
+            color="#BDBDBD"
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.wrapperIconLogOut}>
+          <Feather
+            name="log-out"
+            size={24}
+            color="#BDBDBD"
+            style={styles.iconLogOut}
+            onPress={() => {
+              navigation.navigate("LoginScreen");
+            }}
+          />
+        </TouchableOpacity>
+      </View>
 
-          <View style={styles.wrapperLocation}>
-            <Feather
-              name="map-pin"
-              size={24}
-              color="#BDBDBD"
-              style={styles.feedbackLocationIcon}
-            />
-            <Text style={styles.feedbackLocationText}>{item.location}</Text>
-          </View>
-        </View>
-      </>
-    );
-  };
+      <View style={styles.wrapperTitle}>
+        <Text style={styles.wrapperTitleText}>Natali Romanova</Text>
+      </View>
+    </>
+  );
+};
 
+const ProfileScreen = () => {
   return (
     <ImageBackground
       source={require("../assets/images/bg.png")}
@@ -88,41 +124,13 @@ const ProfileScreen = () => {
       style={styles.background}
     >
       <View style={styles.container}>
-        <View style={styles.wrapperUser}>
-          <Image
-            source={require("../assets/images/rectangle.png")}
-            style={styles.imageUser}
-          />
-          <TouchableOpacity style={styles.wrapperIcon}>
-            <EvilIcons
-              name="close"
-              size={24}
-              color="#BDBDBD"
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.wrapperIconLogOut}>
-            <Feather
-              name="log-out"
-              size={24}
-              color="#BDBDBD"
-              style={styles.iconLogOut}
-              onPress={() => {
-                navigation.navigate("LoginScreen");
-              }}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.wrapperTitle}>
-          <Text style={styles.wrapperTitleText}>Natali Romanova</Text>
-        </View>
         <FlatList
           data={DATA}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
+          ListHeaderComponent={<Header />}
         />
       </View>
     </ImageBackground>
@@ -144,11 +152,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
 
-    marginTop: 220,
+    marginTop: 110,
   },
   wrapperUser: {
-    position: "absolute",
-    top: -60,
+    position: "relative",
+
+    marginBottom: 33,
 
     width: 132,
     height: 120,
@@ -190,7 +199,6 @@ const styles = StyleSheet.create({
   },
   icon: {},
   wrapperTitle: {
-    paddingTop: 60,
     marginBottom: 33,
   },
   wrapperTitleText: {

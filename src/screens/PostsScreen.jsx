@@ -19,33 +19,33 @@ const DATA = [
   },
 ];
 
-const PostsScreen = () => {
-  const renderItem = ({ item }) => (
-    <>
-      <View style={styles.wrapperImage}>
-        <Image style={styles.image} source={item.image} />
+const renderItem = ({ item }) => (
+  <>
+    <View style={styles.wrapperImage}>
+      <Image style={styles.image} source={item.image} />
+    </View>
+    <View style={styles.wrapperImageName}>
+      <Text style={styles.imageNameText}>{item.text}</Text>
+    </View>
+    <View style={styles.wrapperFeedback}>
+      <View style={styles.wrapperPosts}>
+        <Feather name="message-circle" size={24} color="#BDBDBD" />
+        <Text style={styles.feedbackNumber}>{item.feedback}</Text>
       </View>
-      <View style={styles.wrapperImageName}>
-        <Text style={styles.imageNameText}>{item.text}</Text>
+      <View style={styles.wrapperLocation}>
+        <Feather
+          name="map-pin"
+          size={24}
+          color="#BDBDBD"
+          style={styles.feedbackLocationIcon}
+        />
+        <Text style={styles.feedbackLocationText}>{item.location}</Text>
       </View>
-      <View style={styles.wrapperFeedback}>
-        <View style={styles.wrapperPosts}>
-          <Feather name="message-circle" size={24} color="#BDBDBD" />
-          <Text style={styles.feedbackNumber}>{item.feedback}</Text>
-        </View>
-        <View style={styles.wrapperLocation}>
-          <Feather
-            name="map-pin"
-            size={24}
-            color="#BDBDBD"
-            style={styles.feedbackLocationIcon}
-          />
-          <Text style={styles.feedbackLocationText}>{item.location}</Text>
-        </View>
-      </View>
-    </>
-  );
+    </View>
+  </>
+);
 
+const PostsScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.wrapperUser}>
