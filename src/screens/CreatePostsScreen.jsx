@@ -8,6 +8,8 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
+import { Camera } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
 
 const CreatePostsScreen = () => {
   return (
