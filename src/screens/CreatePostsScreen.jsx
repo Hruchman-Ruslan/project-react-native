@@ -1,29 +1,40 @@
+import { Camera, CameraType } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
+import { useState } from "react";
+
 import { SimpleLineIcons, Feather } from "@expo/vector-icons";
 import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   TextInput,
   ScrollView,
 } from "react-native";
-import { Camera } from "expo-camera";
-import * as MediaLibrary from "expo-media-library";
 
 const CreatePostsScreen = () => {
+  const [type, _] = useState(CameraType.back);
+  // const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [cameraRef, setCameraRef] = useState(null);
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <View style={styles.wrapperImage}>
-          <Image
-            style={styles.image}
-            source={require("../assets/images/rectangle-image.jpg")}
-          />
-          <TouchableOpacity style={styles.wrapperIcon}>
+        <Camera style={styles.camera} type={type} ref={setCameraRef}>
+          <TouchableOpacity
+            style={styles.wrapperIcon}
+            onPress={async () => {
+              if (cameraRef) {
+                const { uri } = await cameraRef.takePictureAsync();
+                await MediaLibrary.createAssetAsync(uri);
+                console.log(uri);
+              }
+            }}
+          >
             <SimpleLineIcons name="camera" size={24} color="#BDBDBD" />
           </TouchableOpacity>
-        </View>
+        </Camera>
+
         <View style={styles.wrapperText}>
           <Text style={styles.text}>Upload a photo</Text>
         </View>
@@ -51,8 +62,6 @@ const CreatePostsScreen = () => {
   );
 };
 
-export default CreatePostsScreen;
-
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
@@ -63,22 +72,18 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
     backgroundColor: "white",
   },
-  image: {
-    width: "100%",
-    borderRadius: 8,
-  },
-  wrapperImage: {
-    width: "100%",
-    alignItems: "center",
+  camera: {
+    flex: 1,
     justifyContent: "center",
-    marginBottom: 8,
+    alignItems: "center",
   },
   wrapperIcon: {
-    position: "absolute",
+    position: "relative",
     width: 60,
     height: 60,
     backgroundColor: "#FFFFFF",
     borderRadius: 30,
+    opacity: 0.3,
 
     justifyContent: "center",
     alignItems: "center",
@@ -147,3 +152,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+export default CreatePostsScreen;
