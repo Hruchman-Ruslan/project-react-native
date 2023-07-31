@@ -1,6 +1,9 @@
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
 
 import { SimpleLineIcons, Feather } from "@expo/vector-icons";
 import {
@@ -10,12 +13,24 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
 } from "react-native";
 
 const CreatePostsScreen = () => {
   const [type, _] = useState(CameraType.back);
   // const [permission, requestPermission] = Camera.useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
+  const [name, setName] = useState("");
+  const [locality, setLocality] = useState("");
+  const navigation = useNavigation();
+
+  const handleClickButton = () => {
+    Alert.alert("Credentials", `${cameraRef} + ${name} + ${locality}`);
+    setCameraRef(null);
+    setName("");
+    setLocality("");
+    navigation.navigate("Posts Screen");
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -40,16 +55,29 @@ const CreatePostsScreen = () => {
         </View>
 
         <View style={styles.wrapperInput}>
-          <TextInput style={styles.inputName} placeholder={"Name..."} />
+          <TextInput
+            style={styles.inputName}
+            placeholder={"Name..."}
+            value={name}
+            onChangeText={setName}
+          />
           <Feather
             name="map-pin"
             size={24}
             color="#BDBDBD"
             style={styles.icon}
           />
-          <TextInput style={styles.inputLocality} placeholder={"Locality..."} />
+          <TextInput
+            style={styles.inputLocality}
+            placeholder={"Locality..."}
+            value={locality}
+            onChangeText={setLocality}
+          />
         </View>
-        <TouchableOpacity style={styles.wrapperButton}>
+        <TouchableOpacity
+          style={styles.wrapperButton}
+          onPress={handleClickButton}
+        >
           <Text style={styles.buttonText}>Publish</Text>
         </TouchableOpacity>
         <View style={styles.wrapperBoxDelete}>
