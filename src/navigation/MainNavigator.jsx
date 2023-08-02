@@ -25,7 +25,10 @@ const MainNavigator = () => {
         <MainStack.Screen
           name="CommentsScreen"
           component={CommentsScreen}
-          options={{ headerShown: false }}
+          options={{
+            headerTitle: "Comments Screen",
+            headerTitleAlign: "center",
+          }}
         />
         <MainStack.Screen
           name="BottomNavigator"
