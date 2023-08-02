@@ -2,7 +2,6 @@ import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
 import { SimpleLineIcons, Feather } from "@expo/vector-icons";
@@ -18,18 +17,45 @@ import {
 
 const CreatePostsScreen = () => {
   const [type, _] = useState(CameraType.back);
-  // const [permission, requestPermission] = Camera.useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
   const [name, setName] = useState("");
   const [locality, setLocality] = useState("");
+  const [location, setLocation] = useState(null);
   const navigation = useNavigation();
 
-  const handleClickButton = () => {
-    Alert.alert("Credentials", `${cameraRef} + ${name} + ${locality}`);
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+      } else {
+        let location = await Location.getCurrentPositionAsync({});
+        const coords = {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        };
+        setLocation(coords);
+      }
+    })();
+  }, []);
+
+  const handleClickButton = async () => {
+    const { latitude, longitude } = location;
+
+    Alert.alert(
+      "Credentials",
+      `${cameraRef} + ${name} + ${locality} + Location: ${latitude}, ${longitude}`
+    );
+
     setCameraRef(null);
     setName("");
     setLocality("");
+    setLocation(null);
     navigation.navigate("Posts Screen");
+
+    console.log(
+      `${cameraRef} + ${name} + ${locality} + Location: ${latitude}, ${longitude}`
+    );
   };
 
   return (
@@ -104,9 +130,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingVertical: 90,
   },
   wrapperIcon: {
-    position: "relative",
     width: 60,
     height: 60,
     backgroundColor: "#FFFFFF",

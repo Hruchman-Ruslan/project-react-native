@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 
 const DATA = [
@@ -19,7 +26,7 @@ const DATA = [
   },
 ];
 
-const renderItem = ({ item }) => (
+const renderItem = ({ item, navigation }) => (
   <>
     <View style={styles.wrapperImage}>
       <Image style={styles.image} source={item.image} />
@@ -28,10 +35,13 @@ const renderItem = ({ item }) => (
       <Text style={styles.imageNameText}>{item.text}</Text>
     </View>
     <View style={styles.wrapperFeedback}>
-      <View style={styles.wrapperPosts}>
+      <TouchableOpacity
+        style={styles.wrapperPosts}
+        onPress={() => navigation.navigate("CommentsScreen")}
+      >
         <Feather name="message-circle" size={24} color="#BDBDBD" />
         <Text style={styles.feedbackNumber}>{item.feedback}</Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.wrapperLocation}>
         <Feather
           name="map-pin"
@@ -45,7 +55,7 @@ const renderItem = ({ item }) => (
   </>
 );
 
-const PostsScreen = () => {
+const PostsScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.wrapperUser}>
@@ -60,7 +70,7 @@ const PostsScreen = () => {
 
       <FlatList
         data={DATA}
-        renderItem={renderItem}
+        renderItem={({ item }) => renderItem({ item, navigation })}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
