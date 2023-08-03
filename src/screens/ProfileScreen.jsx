@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
   Text,
@@ -9,62 +8,64 @@ import {
   ImageBackground,
   FlatList,
 } from "react-native";
-import { EvilIcons, Feather } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+import HeaderProfile from "../components/HeaderProfile";
 
 const DATA = [
   {
     id: "1",
-    image: require("../assets/images/rectangle-image.jpg"),
-    text: "Forest",
+    cameraRef: require("../assets/images/rectangle-image.jpg"),
+    name: "Forest",
     messageCount: 8,
     likesCount: 153,
     location: "Ukraine",
   },
   {
     id: "2",
-    image: require("../assets/images/rectangle-2.jpg"),
-    text: "Sunset on the Black Sea",
+    cameraRef: require("../assets/images/rectangle-2.jpg"),
+    name: "Sunset on the Black Sea",
     messageCount: 3,
     likesCount: 200,
     location: "Ukraine",
   },
   {
     id: "3",
-    image: require("../assets/images/rectangle-3.jpg"),
-    text: "An old house in Venice",
+    cameraRef: require("../assets/images/rectangle-3.jpg"),
+    name: "An old house in Venice",
     messageCount: 50,
     likesCount: 200,
     location: "Italy",
   },
 ];
 
-const renderItem = ({ item }) => {
+const renderItem = ({ item, navigation }) => {
   return (
     <>
       <View style={styles.wrapperImage}>
-        <Image style={styles.image} source={item.image} />
+        <Image style={styles.image} source={item.cameraRef} />
       </View>
       <View style={styles.wrapperImageName}>
-        <Text style={styles.imageNameText}>{item.text}</Text>
+        <Text style={styles.imageNameText}>{item.name}</Text>
       </View>
       <View style={styles.wrapperFeedback}>
         <View style={styles.box}>
-          <View style={styles.wrapperPosts}>
-            <Feather
-              name="message-circle"
-              size={24}
-              color="#FF6C00"
-              style={styles.feedbackIcon}
-            />
+          <TouchableOpacity
+            style={styles.wrapperPosts}
+            onPress={() => navigation.navigate("CommentsScreen")}
+          >
+            <Feather name="message-circle" size={24} color="#FF6C00" />
             <Text style={styles.feedbackNumber}>{item.messageCount}</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.wrapperPosts}>
             <Feather name="thumbs-up" size={24} color="#FF6C00" />
             <Text style={styles.feedbackNumber}>{item.likesCount}</Text>
           </View>
         </View>
 
-        <View style={styles.wrapperLocation}>
+        <TouchableOpacity
+          style={styles.wrapperLocation}
+          onPress={() => navigation.navigate("MapScreen")}
+        >
           <Feather
             name="map-pin"
             size={24}
@@ -72,51 +73,13 @@ const renderItem = ({ item }) => {
             style={styles.feedbackLocationIcon}
           />
           <Text style={styles.feedbackLocationText}>{item.location}</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </>
   );
 };
 
-const Header = () => {
-  const navigation = useNavigation();
-
-  return (
-    <>
-      <View style={styles.wrapperUser}>
-        <Image
-          source={require("../assets/images/rectangle.png")}
-          style={styles.imageUser}
-        />
-        <TouchableOpacity style={styles.wrapperIcon}>
-          <EvilIcons
-            name="close"
-            size={24}
-            color="#BDBDBD"
-            style={styles.icon}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.wrapperIconLogOut}>
-          <Feather
-            name="log-out"
-            size={24}
-            color="#BDBDBD"
-            style={styles.iconLogOut}
-            onPress={() => {
-              navigation.navigate("LoginScreen");
-            }}
-          />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.wrapperTitle}>
-        <Text style={styles.wrapperTitleText}>Natali Romanova</Text>
-      </View>
-    </>
-  );
-};
-
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
   return (
     <ImageBackground
       source={require("../assets/images/bg.png")}
@@ -126,11 +89,11 @@ const ProfileScreen = () => {
       <View style={styles.container}>
         <FlatList
           data={DATA}
+          renderItem={({ item }) => renderItem({ item, navigation })}
           keyExtractor={(item) => item.id}
-          renderItem={renderItem}
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
-          ListHeaderComponent={<Header />}
+          ListHeaderComponent={<HeaderProfile />}
         />
       </View>
     </ImageBackground>
@@ -154,61 +117,6 @@ const styles = StyleSheet.create({
 
     marginTop: 110,
   },
-  wrapperUser: {
-    position: "relative",
-
-    marginBottom: 33,
-
-    width: 132,
-    height: 120,
-    backgroundColor: "#F6F6F6",
-    borderRadius: 16,
-
-    alignSelf: "center",
-  },
-  imageUser: {
-    width: "100%",
-    flex: 1,
-    borderRadius: 8,
-  },
-  wrapperIcon: {
-    position: "absolute",
-    width: 27,
-    height: 27,
-    top: 78,
-    left: 117,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 30,
-
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  wrapperIconLogOut: {
-    position: "absolute",
-    width: 27,
-    height: 27,
-    top: 78,
-    right: -105,
-    borderRadius: 30,
-
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  feedbackIcon: {
-    transform: [{ rotate: "280deg" }],
-  },
-  icon: {},
-  wrapperTitle: {
-    marginBottom: 33,
-  },
-  wrapperTitleText: {
-    textAlign: "center",
-    fontFamily: "rb-medium",
-    fontSize: 30,
-    fontWeight: "500",
-    letterSpacing: 0.3,
-    color: "#212121",
-  },
   wrapperImage: {
     width: "100%",
     alignItems: "center",
@@ -219,13 +127,15 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 8,
   },
+  wrapperImageName: {
+    marginBottom: 8,
+  },
   imageNameText: {
     color: "#212121",
     fontFamily: "rb-medium",
     fontSize: 16,
     fontWeight: "500",
     lineHeight: 24,
-    marginBottom: 8,
   },
   wrapperFeedback: {
     display: "flex",

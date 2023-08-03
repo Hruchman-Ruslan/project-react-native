@@ -61,12 +61,13 @@ const CreatePostsScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <Camera style={styles.camera} type={type} ref={setCameraRef}>
+        <Camera style={styles.camera} type={type} ref={setCameraRef} autoFocus>
           <TouchableOpacity
             style={styles.wrapperIcon}
             onPress={async () => {
               if (cameraRef) {
                 const { uri } = await cameraRef.takePictureAsync();
+                console.log("URI Data Type:", typeof uri);
                 await MediaLibrary.createAssetAsync(uri);
                 console.log(uri);
               }

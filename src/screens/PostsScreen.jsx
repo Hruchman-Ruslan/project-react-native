@@ -19,8 +19,8 @@ const DATA = [
   },
   {
     id: "2",
-    image: require("../assets/images/rectangle-2.jpg"),
-    text: "Sunset on the Black Sea",
+    cameraRef: require("../assets/images/rectangle-2.jpg"),
+    name: "Sunset on the Black Sea",
     feedback: 3,
     location: "Ukraine",
   },
