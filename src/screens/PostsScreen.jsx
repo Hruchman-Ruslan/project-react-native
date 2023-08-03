@@ -12,8 +12,8 @@ import { Feather } from "@expo/vector-icons";
 const DATA = [
   {
     id: "1",
-    image: require("../assets/images/rectangle-image.jpg"),
-    text: "Forest",
+    cameraRef: require("../assets/images/rectangle-image.jpg"),
+    name: "Forest",
     feedback: 8,
     location: "Ivano-Frankivs'k Region, Ukraine",
   },
@@ -29,10 +29,10 @@ const DATA = [
 const renderItem = ({ item, navigation }) => (
   <>
     <View style={styles.wrapperImage}>
-      <Image style={styles.image} source={item.image} />
+      <Image style={styles.image} source={item.cameraRef} />
     </View>
     <View style={styles.wrapperImageName}>
-      <Text style={styles.imageNameText}>{item.text}</Text>
+      <Text style={styles.imageNameText}>{item.name}</Text>
     </View>
     <View style={styles.wrapperFeedback}>
       <TouchableOpacity
@@ -42,7 +42,10 @@ const renderItem = ({ item, navigation }) => (
         <Feather name="message-circle" size={24} color="#BDBDBD" />
         <Text style={styles.feedbackNumber}>{item.feedback}</Text>
       </TouchableOpacity>
-      <View style={styles.wrapperLocation}>
+      <TouchableOpacity
+        style={styles.wrapperLocation}
+        onPress={() => navigation.navigate("MapScreen")}
+      >
         <Feather
           name="map-pin"
           size={24}
@@ -50,7 +53,7 @@ const renderItem = ({ item, navigation }) => (
           style={styles.feedbackLocationIcon}
         />
         <Text style={styles.feedbackLocationText}>{item.location}</Text>
-      </View>
+      </TouchableOpacity>
     </View>
   </>
 );

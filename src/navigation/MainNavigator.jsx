@@ -5,6 +5,7 @@ import RegistrationScreen from "../screens/RegistrationScreen";
 import LoginScreen from "../screens/LoginScreen";
 import BottomNavigator from "./BottomNavigator";
 import CommentsScreen from "../screens/CommentsScreen";
+import MapScreen from "../screens/MapScreen";
 
 const MainStack = createStackNavigator();
 
@@ -27,6 +28,14 @@ const MainNavigator = () => {
           component={CommentsScreen}
           options={{
             headerTitle: "Comments Screen",
+            headerTitleAlign: "center",
+          }}
+        />
+        <MainStack.Screen
+          name="MapScreen"
+          component={MapScreen}
+          options={{
+            headerTitle: "Map Screen",
             headerTitleAlign: "center",
           }}
         />
