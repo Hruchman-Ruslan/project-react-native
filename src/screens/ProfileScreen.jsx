@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import HeaderProfile from "../components/HeaderProfile";
+import { ScrollView } from "react-native";
 
 const DATA = [
   {
@@ -86,29 +87,77 @@ const ProfileScreen = ({ navigation }) => {
       resizeMode="cover"
       style={styles.background}
     >
-      <View style={styles.container}>
-        <FlatList
-          data={DATA}
-          renderItem={({ item }) => renderItem({ item, navigation })}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.scrollContainer}
-          showsVerticalScrollIndicator={false}
-          ListHeaderComponent={<HeaderProfile />}
-        />
-      </View>
+      <FlatList
+        data={DATA}
+        renderItem={({ item }) => renderItem({ item, navigation })}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={<HeaderProfile />}
+      />
     </ImageBackground>
   );
 };
 
+// const ProfileScreen = ({ navigation }) => {
+//   return (
+//     <ImageBackground
+//       source={require("../assets/images/bg.png")}
+//       resizeMode="cover"
+//       style={styles.background}
+//     >
+//       <ScrollView
+//         contentContainerStyle={styles.scrollContainer}
+//         showsVerticalScrollIndicator={false}
+//       >
+//         <HeaderProfile />
+//         {DATA.map((item) => (
+//           <View key={item.id}>
+//             <View style={styles.wrapperImage}>
+//               <Image style={styles.image} source={item.cameraRef} />
+//             </View>
+//             <View style={styles.wrapperImageName}>
+//               <Text style={styles.imageNameText}>{item.name}</Text>
+//             </View>
+//             <View style={styles.wrapperFeedback}>
+//               <View style={styles.box}>
+//                 <TouchableOpacity
+//                   style={styles.wrapperPosts}
+//                   onPress={() => navigation.navigate("CommentsScreen")}
+//                 >
+//                   <Feather name="message-circle" size={24} color="#FF6C00" />
+//                   <Text style={styles.feedbackNumber}>{item.messageCount}</Text>
+//                 </TouchableOpacity>
+//                 <View style={styles.wrapperPosts}>
+//                   <Feather name="thumbs-up" size={24} color="#FF6C00" />
+//                   <Text style={styles.feedbackNumber}>{item.likesCount}</Text>
+//                 </View>
+//               </View>
+
+//               <TouchableOpacity
+//                 style={styles.wrapperLocation}
+//                 onPress={() => navigation.navigate("MapScreen")}
+//               >
+//                 <Feather
+//                   name="map-pin"
+//                   size={24}
+//                   color="#BDBDBD"
+//                   style={styles.feedbackLocationIcon}
+//                 />
+//                 <Text style={styles.feedbackLocationText}>{item.location}</Text>
+//               </TouchableOpacity>
+//             </View>
+//           </View>
+//         ))}
+//       </ScrollView>
+//     </ImageBackground>
+//   );
+// };
+
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-  },
-  background: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  container: {
+
     paddingHorizontal: 16,
     paddingTop: 32,
     backgroundColor: "white",
@@ -116,6 +165,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
 
     marginTop: 110,
+  },
+  background: {
+    flex: 1,
+    justifyContent: "center",
   },
   wrapperImage: {
     width: "100%",

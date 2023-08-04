@@ -7,7 +7,7 @@ const HeaderProfile = () => {
   const navigation = useNavigation();
 
   return (
-    <>
+    <View style={styles.container}>
       <View style={styles.wrapperUser}>
         <Image
           source={require("../assets/images/rectangle.png")}
@@ -29,24 +29,25 @@ const HeaderProfile = () => {
       <View style={styles.wrapperTitle}>
         <Text style={styles.wrapperTitleText}>Natali Romanova</Text>
       </View>
-    </>
+    </View>
   );
 };
 
-export default HeaderProfile;
-
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   wrapperUser: {
-    position: "relative",
+    // position: "absolute",
+    // top: -80,
 
     marginBottom: 33,
 
     width: 132,
     height: 120,
-    backgroundColor: "#F6F6F6",
     borderRadius: 16,
-
     alignSelf: "center",
+    flex: 1,
   },
   imageUser: {
     width: "100%",
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     width: 27,
     height: 27,
     top: 78,
-    right: -105,
+    right: -95,
     borderRadius: 30,
 
     alignItems: "center",
@@ -90,3 +91,5 @@ const styles = StyleSheet.create({
     color: "#212121",
   },
 });
+
+export default HeaderProfile;

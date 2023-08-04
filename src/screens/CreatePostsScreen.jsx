@@ -21,6 +21,7 @@ const CreatePostsScreen = () => {
   const [name, setName] = useState("");
   const [locality, setLocality] = useState("");
   const [location, setLocation] = useState(null);
+  const [photoTaken, setPhotoTaken] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -40,6 +41,11 @@ const CreatePostsScreen = () => {
   }, []);
 
   const handleClickButton = async () => {
+    if (!photoTaken) {
+      Alert.alert("Error", "Please take a photo before publishing.");
+      return;
+    }
+
     const { latitude, longitude } = location;
 
     Alert.alert(
@@ -51,6 +57,7 @@ const CreatePostsScreen = () => {
     setName("");
     setLocality("");
     setLocation(null);
+    setPhotoTaken(false);
     navigation.navigate("Posts Screen");
 
     console.log(
@@ -61,21 +68,24 @@ const CreatePostsScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <Camera style={styles.camera} type={type} ref={setCameraRef} autoFocus>
-          <TouchableOpacity
-            style={styles.wrapperIcon}
-            onPress={async () => {
-              if (cameraRef) {
-                const { uri } = await cameraRef.takePictureAsync();
-                console.log("URI Data Type:", typeof uri);
-                await MediaLibrary.createAssetAsync(uri);
-                console.log(uri);
-              }
-            }}
-          >
-            <SimpleLineIcons name="camera" size={24} color="#BDBDBD" />
-          </TouchableOpacity>
-        </Camera>
+        <View style={styles.wrapperCamera}>
+          <Camera style={styles.camera} type={type} ref={setCameraRef}>
+            <TouchableOpacity
+              style={styles.wrapperIcon}
+              onPress={async () => {
+                if (cameraRef) {
+                  const { uri } = await cameraRef.takePictureAsync();
+                  console.log("URI Data Type:", typeof uri);
+                  await MediaLibrary.createAssetAsync(uri);
+                  console.log(uri);
+                  setPhotoTaken(true);
+                }
+              }}
+            >
+              <SimpleLineIcons name="camera" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+          </Camera>
+        </View>
 
         <View style={styles.wrapperText}>
           <Text style={styles.text}>Upload a photo</Text>
@@ -102,10 +112,21 @@ const CreatePostsScreen = () => {
           />
         </View>
         <TouchableOpacity
-          style={styles.wrapperButton}
+          style={[
+            styles.wrapperButton,
+            { backgroundColor: photoTaken ? "#FF6C00" : "#F6F6F6" },
+          ]}
           onPress={handleClickButton}
+          disabled={!photoTaken}
         >
-          <Text style={styles.buttonText}>Publish</Text>
+          <Text
+            style={[
+              styles.buttonText,
+              { color: photoTaken ? "#FFFFFF" : "#BDBDBD" },
+            ]}
+          >
+            Publish
+          </Text>
         </TouchableOpacity>
         <View style={styles.wrapperBoxDelete}>
           <TouchableOpacity style={styles.wrapperIconDelete}>
@@ -126,13 +147,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 32,
     backgroundColor: "white",
+    justifyContent: "space-between",
+  },
+  wrapperCamera: {
+    borderRadius: 8,
+    overflow: "hidden",
   },
   camera: {
-    flex: 1,
+    height: 240,
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 90,
   },
+
   wrapperIcon: {
     width: 60,
     height: 60,
@@ -160,7 +187,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#E8E8E8",
 
-    color: "#BDBDBD",
+    color: "#212121",
     fontFamily: "rb-regular",
     fontSize: 16,
   },
@@ -170,7 +197,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#E8E8E8",
 
-    color: "#BDBDBD",
+    color: "#212121",
     fontFamily: "rb-regular",
     fontSize: 16,
   },
@@ -187,7 +214,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
   },
   buttonText: {
-    color: "#FFF",
     textAlign: "center",
     fontFamily: "rb-regular",
     fontSize: 16,

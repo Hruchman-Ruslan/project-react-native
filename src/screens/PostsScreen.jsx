@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import HeaderPosts from "../components/HeaderPosts";
 
 const DATA = [
   {
@@ -60,46 +61,23 @@ const renderItem = ({ item, navigation }) => (
 
 const PostsScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.wrapperUser}>
-        <View style={styles.wrapperAvatar}>
-          <Image source={require("../assets/images/rectangle.jpg")} />
-        </View>
-        <View style={styles.wrapperText}>
-          <Text style={styles.loginText}>Natali Romanova</Text>
-          <Text style={styles.emailText}>email@example.com</Text>
-        </View>
-      </View>
-
-      <FlatList
-        data={DATA}
-        renderItem={({ item }) => renderItem({ item, navigation })}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+    <FlatList
+      data={DATA}
+      renderItem={({ item }) => renderItem({ item, navigation })}
+      keyExtractor={(item) => item.id}
+      contentContainerStyle={styles.scrollContainer}
+      showsVerticalScrollIndicator={false}
+      ListHeaderComponent={<HeaderPosts />}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-  },
-  container: {
-    flex: 1,
     paddingHorizontal: 16,
     paddingTop: 32,
     backgroundColor: "white",
-  },
-  wrapperUser: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 32,
-  },
-  wrapperAvatar: {
-    borderRadius: 8,
   },
   wrapperImage: {
     width: "100%",
@@ -110,20 +88,6 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     borderRadius: 8,
-  },
-  wrapperText: {},
-  loginText: {
-    color: "#212121",
-    fontFamily: "rb-bold",
-    fontSize: 13,
-    fontWeight: "700",
-    lineHeight: 20,
-  },
-  emailText: {
-    color: "#212121",
-    fontFamily: "rb-regular",
-    fontSize: 11,
-    lineHeight: 16,
   },
   imageNameText: {
     color: "#212121",

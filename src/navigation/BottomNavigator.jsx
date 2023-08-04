@@ -94,6 +94,7 @@ const BottomNavigator = () => {
           ),
           tabBarShowLabel: false,
           tabBarStyle: { display: "none" },
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
