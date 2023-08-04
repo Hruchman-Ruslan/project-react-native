@@ -7,7 +7,7 @@ const HeaderProfile = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
+    <>
       <View style={styles.wrapperUser}>
         <Image
           source={require("../assets/images/rectangle.png")}
@@ -29,14 +29,11 @@ const HeaderProfile = () => {
       <View style={styles.wrapperTitle}>
         <Text style={styles.wrapperTitleText}>Natali Romanova</Text>
       </View>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   wrapperUser: {
     // position: "absolute",
     // top: -80,
@@ -46,8 +43,8 @@ const styles = StyleSheet.create({
     width: 132,
     height: 120,
     borderRadius: 16,
+
     alignSelf: "center",
-    flex: 1,
   },
   imageUser: {
     width: "100%",

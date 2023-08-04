@@ -41,11 +41,6 @@ const CreatePostsScreen = () => {
   }, []);
 
   const handleClickButton = async () => {
-    if (!photoTaken) {
-      Alert.alert("Error", "Please take a photo before publishing.");
-      return;
-    }
-
     const { latitude, longitude } = location;
 
     Alert.alert(
