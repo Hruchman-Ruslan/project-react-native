@@ -12,7 +12,7 @@ const MainStack = createStackNavigator();
 const MainNavigator = () => {
   return (
     <NavigationContainer>
-      <MainStack.Navigator initialRouteName="RegistrationScreen">
+      <MainStack.Navigator initialRouteName="LoginScreen">
         <MainStack.Screen
           name="RegistrationScreen"
           component={RegistrationScreen}

@@ -2,6 +2,7 @@ import { Text, View, StyleSheet, FlatList, Image } from "react-native";
 import { useState } from "react";
 import CommentInput from "../components/CommentInput";
 import { Alert } from "react-native";
+import HeaderComments from "../components/HeaderComments";
 
 const DATA = [
   {
@@ -44,18 +45,13 @@ const CommentsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.wrapperImage}>
-        <Image
-          style={styles.image}
-          source={require("../assets/images/rectangle-2.jpg")}
-        />
-      </View>
-
       <FlatList
         data={DATA}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContainer}
+        ListHeaderComponent={<HeaderComments />}
       />
 
       <CommentInput
@@ -79,18 +75,12 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "white",
   },
-  wrapperImage: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 32,
-  },
   wrapper: {
     gap: 16,
     flexDirection: "row",
-    // flexDirection: "row-reverse",
     alignItems: "flex-start",
     justifyContent: "flex-start",
+    marginTop: 32,
     marginBottom: 24,
   },
   wrapperAvatar: {},

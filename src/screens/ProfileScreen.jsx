@@ -156,7 +156,7 @@ const ProfileScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    flexGrow: 1,
+    // flexGrow: 1,
 
     paddingHorizontal: 16,
     paddingTop: 32,
@@ -165,19 +165,20 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
 
     marginTop: 110,
+    paddingBottom: 100,
   },
   background: {
-    flex: 1,
+    // flex: 1,
     justifyContent: "center",
   },
   wrapperImage: {
-    width: "100%",
+    // width: "100%",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 8,
   },
   image: {
-    width: "100%",
+    // width: "100%",
     borderRadius: 8,
   },
   wrapperImageName: {
