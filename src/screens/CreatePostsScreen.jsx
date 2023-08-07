@@ -72,12 +72,20 @@ const CreatePostsScreen = () => {
 
   const handlePhoto = async () => {
     try {
-      const { uri } = await cameraRef.takePictureAsync();
-      await MediaLibrary.createAssetAsync(uri);
-      console.log(uri);
-      setPhotoTaken(true);
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      if (status === "granted") {
+        if (cameraRef) {
+          const { uri } = await cameraRef.takePictureAsync();
+          console.log("URI Data Type:", typeof uri);
+          await MediaLibrary.createAssetAsync(uri);
+          console.log(uri);
+          setPhotoTaken(true);
+        }
+      } else {
+        console.log("Camera permission not granted");
+      }
     } catch (error) {
-      console.error("Error creating asset:", error.message);
+      console.error("Error taking a picture:", error.message);
     }
   };
 
