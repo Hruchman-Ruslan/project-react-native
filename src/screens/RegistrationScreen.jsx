@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, View, Alert } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Title } from "../components/Title";
 import { Input } from "../components/Input";
@@ -11,24 +11,30 @@ import { AddPhoto } from "../components/AddPhoto";
 import { KeyboardWrapper } from "../components/KeyboardWrapper";
 import { Background } from "../components/Background";
 import { ShowPassword } from "../components/ShowPassword";
+import { useDispatch } from "react-redux";
+import { authSignUpUser } from "../redux/auth/authOperations";
+
+const initialState = {
+  login: "",
+  email: "",
+  password: "",
+};
 
 export default function RegistrationScreen() {
+  const [state, setState] = useState(initialState);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
-  const [login, setLogin] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigation = useNavigation();
+
+  const dispatch = useDispatch();
 
   const handleTogglePassword = () => {
     setPasswordVisible(!isPasswordVisible);
   };
 
   const handleClickButton = () => {
-    Alert.alert("Credentials", `${login} + ${email} + ${password}`);
-    setLogin("");
-    setEmail("");
-    setPassword("");
-    navigation.navigate("BottomNavigator");
+    dispatch(authSignUpUser(state));
+    setState(initialState);
+    // navigation.navigate("BottomNavigator");
   };
 
   const handleClickOnText = () => {
@@ -43,13 +49,27 @@ export default function RegistrationScreen() {
           <Title title={"Registration"} />
 
           <View style={styles.inputWrapper}>
-            <Input defaultText={"Login"} text={login} setText={setLogin} />
-            <Input defaultText={"Email"} text={email} setText={setEmail} />
             <Input
-              defaultText={"Password"}
-              access={!isPasswordVisible}
-              text={password}
-              setText={setPassword}
+              placeholder={"Login"}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, login: value }))
+              }
+            />
+            <Input
+              placeholder={"Email"}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, email: value }))
+              }
+            />
+            <Input
+              placeholder={"Password"}
+              secureTextEntry={!isPasswordVisible}
+              onChangeText={(value) =>
+                setState((prevState) => ({
+                  ...prevState,
+                  password: value,
+                }))
+              }
             />
             <ShowPassword
               isPasswordVisible={isPasswordVisible}
