@@ -10,21 +10,27 @@ import { Background } from "../components/Background";
 import { KeyboardWrapper } from "../components/KeyboardWrapper";
 import { ShowPassword } from "../components/ShowPassword";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { authLogInUser } from "../redux/auth/authOperations";
+
+const initialState = {
+  email: "",
+  password: "",
+};
 
 export default function LoginScreen() {
+  const [state, setState] = useState(initialState);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigation = useNavigation();
+
+  const dispatch = useDispatch();
 
   const handleTogglePassword = () => {
     setPasswordVisible(!isPasswordVisible);
   };
 
   const handleClickButton = () => {
-    Alert.alert("Credentials", ` ${email} + ${password}`);
-    setEmail("");
-    setPassword("");
+    dispatch(authLogInUser(state));
     navigation.navigate("BottomNavigator");
   };
 
@@ -39,12 +45,18 @@ export default function LoginScreen() {
           <Title title={"Sign in"} />
 
           <View style={styles.inputWrapper}>
-            <Input defaultText={"Email"} text={email} setText={setEmail} />
             <Input
-              defaultText={"Password"}
-              access={!isPasswordVisible}
-              text={password}
-              setText={setPassword}
+              placeholder={"Email"}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, email: value }))
+              }
+            />
+            <Input
+              placeholder={"Password"}
+              secureTextEntry={!isPasswordVisible}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, password: value }))
+              }
             />
             <ShowPassword
               isPasswordVisible={isPasswordVisible}

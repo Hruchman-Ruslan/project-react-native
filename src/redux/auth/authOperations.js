@@ -36,6 +36,7 @@ export const authLogInUser = createAsyncThunk(
   async ({ email, password }, thunkAPI) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
+      console.log("user", user.displayName);
 
       const { displayName, uid } = user;
 
@@ -51,6 +52,7 @@ export const authSignOutUser = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       await signOut(auth);
+      console.log("user", auth.currentUser);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
