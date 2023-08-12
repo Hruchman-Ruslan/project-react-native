@@ -40,6 +40,8 @@ export const authLogInUser = createAsyncThunk(
 
       const { displayName, uid } = user;
 
+      console.log(user);
+
       return { displayName, uid };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

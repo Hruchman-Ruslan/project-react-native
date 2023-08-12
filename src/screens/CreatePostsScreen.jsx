@@ -1,10 +1,10 @@
-import { Camera, CameraType } from "expo-camera";
+import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 import { collection, addDoc } from "firebase/firestore";
-import { database } from "../firebase/config";
+import { database, storage } from "../firebase/config";
 
 import { SimpleLineIcons, Feather } from "@expo/vector-icons";
 import {
@@ -15,6 +15,7 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 const CreatePostsScreen = () => {
   const [cameraRef, setCameraRef] = useState(null);
@@ -51,12 +52,20 @@ const CreatePostsScreen = () => {
 
   const postDatabase = async () => {
     try {
+      const response = await fetch(photo);
+      const blob = await response.blob();
+      const storageRef = ref(storage, `${Date.now()}.jpg`);
+      await uploadBytesResumable(storageRef, blob);
+
+      const downloadURL = await getDownloadURL(storageRef);
+
       const docRef = await addDoc(collection(database, "users"), {
-        photo,
+        photo: downloadURL,
         geoLocation,
         title,
         location,
       });
+
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -64,8 +73,8 @@ const CreatePostsScreen = () => {
     }
   };
 
-  const handleSubmit = () => {
-    postDatabase();
+  const handleSubmit = async () => {
+    await postDatabase();
     navigation.navigate("Posts Screen");
     setPhotoTaken(false);
   };
