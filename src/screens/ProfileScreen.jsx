@@ -15,8 +15,6 @@ import { database } from "../firebase/config";
 import { useState } from "react";
 
 const renderItem = ({ item, navigation }) => {
-  const { photo } = item;
-  console.log("photo", photo);
   return (
     <>
       <View style={styles.wrapperImage}>
