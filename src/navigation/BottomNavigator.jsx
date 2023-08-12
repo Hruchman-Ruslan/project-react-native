@@ -5,11 +5,14 @@ import CreatePostsScreen from "../screens/CreatePostsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { SimpleLineIcons, Feather, Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity, View } from "react-native";
+import { authSignOutUser } from "../redux/auth/authOperations";
+import { useDispatch } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 
 const BottomNavigator = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   return (
     <Tab.Navigator
@@ -52,6 +55,7 @@ const BottomNavigator = () => {
                 size={24}
                 color="#BDBDBD"
                 onPress={() => {
+                  dispatch(authSignOutUser());
                   navigation.navigate("LoginScreen");
                 }}
               />

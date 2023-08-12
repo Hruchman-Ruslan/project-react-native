@@ -3,6 +3,8 @@ import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
+import { collection, addDoc } from "firebase/firestore";
+import { database } from "../firebase/config";
 
 import { SimpleLineIcons, Feather } from "@expo/vector-icons";
 import {
@@ -12,96 +14,75 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  Alert,
 } from "react-native";
 
 const CreatePostsScreen = () => {
-  const [type, _] = useState(CameraType.back);
   const [cameraRef, setCameraRef] = useState(null);
-  const [name, setName] = useState("");
-  const [locality, setLocality] = useState("");
-  const [location, setLocation] = useState(null);
+  const [photo, setPhoto] = useState("");
+  const [geoLocation, setGeoLocation] = useState({ latitude: 0, longitude: 0 });
+  const [title, setTitle] = useState("");
+  const [location, setLocation] = useState("");
   const [photoTaken, setPhotoTaken] = useState(false);
-  const [hasPermission, setHasPermission] = useState(null);
   const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      const coords = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      };
-      setLocation(coords);
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
+      await Camera.requestCameraPermissionsAsync();
       await MediaLibrary.requestPermissionsAsync();
-
-      setHasPermission(status === "granted");
+      await Location.requestForegroundPermissionsAsync();
     })();
   }, []);
 
-  const handleClickButton = async () => {
-    const { latitude, longitude } = location;
-
-    Alert.alert(
-      "Credentials",
-      `${cameraRef} + ${name} + ${locality} + Location: ${latitude}, ${longitude}`
-    );
-
-    setCameraRef(null);
-    setName("");
-    setLocality("");
-    setLocation(null);
-    setPhotoTaken(false);
-    navigation.navigate("Posts Screen");
-
-    console.log(
-      `${cameraRef} + ${name} + ${locality} + Location: ${latitude}, ${longitude}`
-    );
-  };
-
-  const handlePhoto = async () => {
+  const isTakePhoto = async () => {
     try {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      if (status === "granted") {
-        if (cameraRef) {
-          const { uri } = await cameraRef.takePictureAsync();
-          console.log("URI Data Type:", typeof uri);
-          await MediaLibrary.createAssetAsync(uri);
-          console.log(uri);
-          setPhotoTaken(true);
-        }
-      } else {
-        console.log("Camera permission not granted");
-      }
+      const { uri } = await cameraRef.takePictureAsync();
+      await MediaLibrary.createAssetAsync(uri);
+      const { coords } = await Location.getCurrentPositionAsync({});
+      setGeoLocation({
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+      });
+      setPhoto(uri);
+      setPhotoTaken(true);
     } catch (error) {
-      console.error("Error taking a picture:", error.message);
+      console.log(error.message);
     }
   };
 
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
+  const postDatabase = async () => {
+    try {
+      const docRef = await addDoc(collection(database, "users"), {
+        photo,
+        geoLocation,
+        title,
+        location,
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      throw e;
+    }
+  };
+
+  const handleSubmit = () => {
+    postDatabase();
+    navigation.navigate("Posts Screen");
+    setPhotoTaken(false);
+  };
+
+  const handleDelete = () => {
+    setCameraRef(null);
+    setTitle("");
+    setLocation("");
+    setPhotoTaken(false);
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         <View style={styles.wrapperCamera}>
-          <Camera style={styles.camera} type={type} ref={setCameraRef}>
-            <TouchableOpacity style={styles.wrapperIcon} onPress={handlePhoto}>
+          <Camera style={styles.camera} ref={setCameraRef}>
+            <TouchableOpacity style={styles.wrapperIcon} onPress={isTakePhoto}>
               <SimpleLineIcons name="camera" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           </Camera>
@@ -114,9 +95,9 @@ const CreatePostsScreen = () => {
         <View style={styles.wrapperInput}>
           <TextInput
             style={styles.inputName}
-            placeholder={"Name..."}
-            value={name}
-            onChangeText={setName}
+            placeholder={"Title..."}
+            value={title}
+            onChangeText={setTitle}
           />
           <Feather
             name="map-pin"
@@ -126,9 +107,9 @@ const CreatePostsScreen = () => {
           />
           <TextInput
             style={styles.inputLocality}
-            placeholder={"Locality..."}
-            value={locality}
-            onChangeText={setLocality}
+            placeholder={"Location"}
+            value={location}
+            onChangeText={setLocation}
           />
         </View>
         <TouchableOpacity
@@ -136,7 +117,7 @@ const CreatePostsScreen = () => {
             styles.wrapperButton,
             { backgroundColor: photoTaken ? "#FF6C00" : "#F6F6F6" },
           ]}
-          onPress={handleClickButton}
+          onPress={handleSubmit}
           disabled={!photoTaken}
         >
           <Text
@@ -149,7 +130,10 @@ const CreatePostsScreen = () => {
           </Text>
         </TouchableOpacity>
         <View style={styles.wrapperBoxDelete}>
-          <TouchableOpacity style={styles.wrapperIconDelete}>
+          <TouchableOpacity
+            style={styles.wrapperIconDelete}
+            onPress={handleDelete}
+          >
             <Feather name="trash-2" size={24} color="#BDBDBD" />
           </TouchableOpacity>
         </View>
