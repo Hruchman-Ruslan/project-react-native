@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -9,31 +9,34 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import HeaderPosts from "../components/HeaderPosts";
+import { database } from "../firebase/config";
+import { useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
 
-const DATA = [
-  {
-    id: "1",
-    cameraRef: require("../assets/images/rectangle-image.jpg"),
-    name: "Forest",
-    feedback: 8,
-    location: "Ivano-Frankivs'k Region, Ukraine",
-  },
-  {
-    id: "2",
-    cameraRef: require("../assets/images/rectangle-2.jpg"),
-    name: "Sunset on the Black Sea",
-    feedback: 3,
-    location: "Ukraine",
-  },
-];
+// const DATA = [
+//   {
+//     id: "1",
+//     cameraRef: require("../assets/images/rectangle-image.jpg"),
+//     name: "Forest",
+//     feedback: 8,
+//     location: "Ivano-Frankivs'k Region, Ukraine",
+//   },
+//   {
+//     id: "2",
+//     cameraRef: require("../assets/images/rectangle-2.jpg"),
+//     name: "Sunset on the Black Sea",
+//     feedback: 3,
+//     location: "Ukraine",
+//   },
+// ];
 
 const renderItem = ({ item, navigation }) => (
   <>
     <View style={styles.wrapperImage}>
-      <Image style={styles.image} source={item.cameraRef} />
+      <Image style={styles.image} source={{ uri: item.photo }} />
     </View>
     <View style={styles.wrapperImageName}>
-      <Text style={styles.imageNameText}>{item.name}</Text>
+      <Text style={styles.imageNameText}>{item.title}</Text>
     </View>
     <View style={styles.wrapperFeedback}>
       <TouchableOpacity
@@ -41,11 +44,13 @@ const renderItem = ({ item, navigation }) => (
         onPress={() => navigation.navigate("CommentsScreen")}
       >
         <Feather name="message-circle" size={24} color="#BDBDBD" />
-        <Text style={styles.feedbackNumber}>{item.feedback}</Text>
+        <Text style={styles.feedbackNumber}>0</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.wrapperLocation}
-        onPress={() => navigation.navigate("MapScreen")}
+        onPress={() =>
+          navigation.navigate("MapScreen", { location: item.geoLocation })
+        }
       >
         <Feather
           name="map-pin"
@@ -60,9 +65,30 @@ const renderItem = ({ item, navigation }) => (
 );
 
 const PostsScreen = ({ navigation }) => {
+  const [userPosts, setUserPosts] = useState([]);
+
+  const getDataFromFirestore = async () => {
+    try {
+      const snapshot = await getDocs(collection(database, "users"));
+      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      return data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getDataFromFirestore();
+      setUserPosts(data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <FlatList
-      data={DATA}
+      data={userPosts}
       renderItem={({ item }) => renderItem({ item, navigation })}
       keyExtractor={(item) => item.id}
       contentContainerStyle={styles.scrollContainer}
@@ -86,6 +112,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   image: {
+    height: 240,
     width: "100%",
     borderRadius: 8,
   },
