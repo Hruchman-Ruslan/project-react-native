@@ -41,7 +41,7 @@ const renderItem = ({ item, navigation }) => {
         <TouchableOpacity
           style={styles.wrapperLocation}
           onPress={() =>
-            navigation.navigate("MapScreen", { location: item.location })
+            navigation.navigate("MapScreen", { location: item.geoLocation })
           }
         >
           <Feather
