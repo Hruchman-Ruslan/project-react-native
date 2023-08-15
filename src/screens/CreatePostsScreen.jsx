@@ -16,6 +16,7 @@ import {
   ScrollView,
 } from "react-native";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { useSelector } from "react-redux";
 
 const CreatePostsScreen = () => {
   const [cameraRef, setCameraRef] = useState(null);
@@ -25,6 +26,7 @@ const CreatePostsScreen = () => {
   const [location, setLocation] = useState("");
   const [photoTaken, setPhotoTaken] = useState(false);
   const navigation = useNavigation();
+  // const userID = useSelector((state) => state.userID);
 
   useEffect(() => {
     (async () => {

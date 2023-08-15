@@ -1,25 +1,24 @@
 import { AntDesign } from "@expo/vector-icons";
 import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { database } from "../firebase/config";
 
-const CommentInput = () => {
+const CommentInput = ({ postId }) => {
   const [addMessage, setAddMessage] = useState("");
+  console.log("id", postId);
 
   const postMessage = async () => {
     try {
       const createdAt = new Date().toLocaleString();
-      const docRef = await addDoc(collection(database, "chat"), {
-        addMessage,
-        createdAt,
-      });
+
+      const docRef = await addDoc(
+        collection(database, "users", postId, "comments"),
+        {
+          addMessage,
+          createdAt,
+        }
+      );
 
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
@@ -30,7 +29,6 @@ const CommentInput = () => {
 
   const handleSubmit = async () => {
     await postMessage();
-    Alert.alert(`${addMessage}`);
     setAddMessage("");
   };
 

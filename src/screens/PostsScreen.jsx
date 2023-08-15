@@ -12,23 +12,7 @@ import HeaderPosts from "../components/HeaderPosts";
 import { database } from "../firebase/config";
 import { useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-
-// const DATA = [
-//   {
-//     id: "1",
-//     cameraRef: require("../assets/images/rectangle-image.jpg"),
-//     name: "Forest",
-//     feedback: 8,
-//     location: "Ivano-Frankivs'k Region, Ukraine",
-//   },
-//   {
-//     id: "2",
-//     cameraRef: require("../assets/images/rectangle-2.jpg"),
-//     name: "Sunset on the Black Sea",
-//     feedback: 3,
-//     location: "Ukraine",
-//   },
-// ];
+import { useSelector } from "react-redux";
 
 const renderItem = ({ item, navigation }) => (
   <>
@@ -41,7 +25,12 @@ const renderItem = ({ item, navigation }) => (
     <View style={styles.wrapperFeedback}>
       <TouchableOpacity
         style={styles.wrapperPosts}
-        onPress={() => navigation.navigate("CommentsScreen")}
+        onPress={() =>
+          navigation.navigate("CommentsScreen", {
+            postId: item.id,
+            uri: item.photo,
+          })
+        }
       >
         <Feather name="message-circle" size={24} color="#BDBDBD" />
         <Text style={styles.feedbackNumber}>0</Text>
@@ -66,6 +55,9 @@ const renderItem = ({ item, navigation }) => (
 
 const PostsScreen = ({ navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
+
+  // const userID = useSelector((state) => state.userID);
+  // console.log("User", userPosts);
 
   const getDataFromFirestore = async () => {
     try {

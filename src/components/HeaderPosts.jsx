@@ -1,15 +1,21 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
+import { useSelector } from "react-redux";
 
 const HeaderPosts = () => {
+  const login = useSelector((state) => state.login);
+  const email = useSelector((state) => state.email);
+  console.log(login);
+  console.log(email);
+
   return (
     <View style={styles.wrapperUser}>
       <View style={styles.wrapperAvatar}>
         <Image source={require("../assets/images/rectangle.jpg")} />
       </View>
       <View style={styles.wrapperText}>
-        <Text style={styles.loginText}>Natali Romanova</Text>
-        <Text style={styles.emailText}>email@example.com</Text>
+        <Text style={styles.loginText}>{login}</Text>
+        <Text style={styles.emailText}>{email}</Text>
       </View>
     </View>
   );

@@ -1,28 +1,10 @@
 import { Text, View, StyleSheet, FlatList, Image } from "react-native";
 import { useState } from "react";
 import CommentInput from "../components/CommentInput";
-import { Alert } from "react-native";
 import HeaderComments from "../components/HeaderComments";
 import { database } from "../firebase/config";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { useEffect } from "react";
-
-// const DATA = [
-//   {
-//     id: "1",
-//     avatar: require("../assets/images/rectangle.png"),
-//     message:
-//       "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
-//     datetime: new Date("2023-08-02T08:30:00"),
-//   },
-//   {
-//     id: "2",
-//     avatar: require("../assets/images/rectangle.png"),
-//     message:
-//       "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.",
-//     datetime: new Date("2023-08-02T09:15:00"),
-//   },
-// ];
 
 const renderItem = ({ item }) => (
   <>
@@ -41,14 +23,22 @@ const renderItem = ({ item }) => (
   </>
 );
 
-const CommentsScreen = () => {
+const CommentsScreen = ({ route }) => {
+  const { postId, uri } = route.params;
+  console.log("test", postId);
+
   const [getMessage, setGetMessage] = useState([]);
-  console.log(getMessage);
 
   const getDataFromFirestore = async () => {
     try {
-      const snapshot = await getDocs(collection(database, "chat"));
-      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const snapshot = await getDocs(
+        collection(database, "users", postId, "comments")
+      );
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log("data", data);
       return data;
     } catch (error) {
       console.log(error);
@@ -72,8 +62,8 @@ const CommentsScreen = () => {
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContainer}
-        ListHeaderComponent={<HeaderComments />}
-        ListFooterComponent={<CommentInput />}
+        ListHeaderComponent={<HeaderComments image={uri} />}
+        ListFooterComponent={<CommentInput postId={postId} />}
         ListFooterComponentStyle={styles.footer}
       />
     </View>
@@ -85,6 +75,7 @@ export default CommentsScreen;
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
+    flex: 1,
   },
   container: {
     flex: 1,

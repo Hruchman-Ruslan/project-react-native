@@ -18,12 +18,12 @@ export const authSignUpUser = createAsyncThunk(
       const user = auth.currentUser;
 
       if (user) {
-        await updateProfile(user, { displayName: login });
+        await updateProfile(user, { displayName: login, photoURL, email });
         console.log("user", user);
 
-        const { displayName, uid } = auth.currentUser;
+        const { displayName, uid, photoURL, email } = auth.currentUser;
 
-        return { displayName, uid };
+        return { displayName, uid, photoURL, email };
       }
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -36,13 +36,13 @@ export const authLogInUser = createAsyncThunk(
   async ({ email, password }, thunkAPI) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-      console.log("user", user.displayName);
+      console.log("user", user.displayName, user.photoURL);
 
-      const { displayName, uid } = user;
+      const { displayName, uid, photoURL, email } = user;
 
       console.log(user);
 
-      return { displayName, uid };
+      return { displayName, uid, photoURL, email };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -70,6 +70,8 @@ export const authOnStateChanged = createAsyncThunk(
           const updateSuccessful = auth.currentUser;
 
           await updateProfile(updateSuccessful, {
+            email: updateSuccessful.email,
+            avatar: updateSuccessful.photoURL,
             login: updateSuccessful.displayName,
             userID: updateSuccessful.uid,
             isAuth: true,

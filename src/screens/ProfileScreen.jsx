@@ -13,6 +13,7 @@ import { Feather } from "@expo/vector-icons";
 import HeaderProfile from "../components/HeaderProfile";
 import { database } from "../firebase/config";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const renderItem = ({ item, navigation }) => {
   return (
@@ -27,7 +28,12 @@ const renderItem = ({ item, navigation }) => {
         <View style={styles.box}>
           <TouchableOpacity
             style={styles.wrapperPosts}
-            onPress={() => navigation.navigate("CommentsScreen")}
+            onPress={() =>
+              navigation.navigate("CommentsScreen", {
+                postId: item.id,
+                uri: item.photo,
+              })
+            }
           >
             <Feather name="message-circle" size={24} color="#FF6C00" />
             <Text style={styles.feedbackNumber}>0</Text>
@@ -59,6 +65,7 @@ const renderItem = ({ item, navigation }) => {
 
 const ProfileScreen = ({ navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
+  // const userID = useSelector((state) => state.userID);
 
   const getDataFromFirestore = async () => {
     try {

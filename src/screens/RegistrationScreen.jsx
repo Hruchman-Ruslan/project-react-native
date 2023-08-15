@@ -34,7 +34,7 @@ export default function RegistrationScreen() {
   const handleClickButton = () => {
     dispatch(authSignUpUser(state));
     setState(initialState);
-    // navigation.navigate("BottomNavigator");
+    navigation.navigate("BottomNavigator");
   };
 
   const handleClickOnText = () => {

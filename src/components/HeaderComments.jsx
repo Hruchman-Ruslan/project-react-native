@@ -2,14 +2,11 @@ import React from "react";
 
 import { StyleSheet, View, Image } from "react-native";
 
-const HeaderComments = () => {
+const HeaderComments = ({ image }) => {
   return (
     <View style={styles.container}>
       <View style={styles.wrapperImage}>
-        <Image
-          style={styles.image}
-          source={require("../assets/images/rectangle-2.jpg")}
-        />
+        <Image style={styles.image} source={{ uri: image }} />
       </View>
     </View>
   );
@@ -24,6 +21,11 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
+  },
+  image: {
+    height: 240,
+    width: "100%",
+    borderRadius: 8,
   },
 });
 
