@@ -67,15 +67,23 @@ export const authOnStateChanged = createAsyncThunk(
     try {
       onAuthStateChanged(auth, async (user) => {
         if (user) {
-          const updateSuccessful = auth.currentUser;
+          const { displayName, uid, photoURL, email } = user;
 
-          await updateProfile(updateSuccessful, {
-            email: updateSuccessful.email,
-            avatar: updateSuccessful.photoURL,
-            login: updateSuccessful.displayName,
-            userID: updateSuccessful.uid,
-            isAuth: true,
+          await updateProfile(user, {
+            displayName,
+            photoURL,
           });
+
+          thunkAPI.dispatch(
+            authSlice.actions.authUpdated({
+              displayName,
+              uid,
+              photoURL,
+              email,
+            })
+          );
+        } else {
+          thunkAPI.dispatch(authSlice.actions.authUpdated(null));
         }
       });
     } catch (error) {
