@@ -7,6 +7,7 @@ import { authSignOutUser } from "../redux/auth/authOperations";
 
 const HeaderProfile = () => {
   const login = useSelector((state) => state.login);
+  const avatar = useSelector((state) => state.avatar);
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -14,10 +15,11 @@ const HeaderProfile = () => {
   return (
     <>
       <View style={styles.wrapperUser}>
-        <Image
-          source={require("../assets/images/rectangle.png")}
-          style={styles.imageUser}
-        />
+        {avatar ? (
+          <Image source={{ uri: avatar }} style={styles.imageUser} />
+        ) : (
+          <Image source={require("../assets/images/defautl.png")} />
+        )}
         <TouchableOpacity style={styles.wrapperIcon}>
           <EvilIcons name="close" size={24} color="#BDBDBD" />
         </TouchableOpacity>

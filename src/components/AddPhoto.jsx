@@ -1,10 +1,15 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { Image } from "react-native";
 
-export const AddPhoto = ({ onPress }) => {
+export const AddPhoto = ({ avatar, onPress }) => {
   return (
     <TouchableOpacity style={styles.wrapper} onPress={onPress}>
-      <AntDesign name="pluscircleo" size={25} style={styles.icon} />
+      {avatar ? (
+        <Image source={{ uri: avatar }} style={styles.image} />
+      ) : (
+        <AntDesign name="pluscircleo" size={25} style={styles.icon} />
+      )}
     </TouchableOpacity>
   );
 };
@@ -24,5 +29,9 @@ const styles = StyleSheet.create({
     top: 78,
     left: 117,
     color: "#FF6C00",
+  },
+  image: {
+    flex: 1,
+    borderRadius: 16,
   },
 });

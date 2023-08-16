@@ -56,9 +56,6 @@ const renderItem = ({ item, navigation }) => (
 const PostsScreen = ({ navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
 
-  // const userID = useSelector((state) => state.userID);
-  // console.log("User", userPosts);
-
   const getDataFromFirestore = async () => {
     try {
       const snapshot = await getDocs(collection(database, "users"));

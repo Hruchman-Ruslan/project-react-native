@@ -11,14 +11,18 @@ import { auth } from "../../firebase/config";
 
 export const authSignUpUser = createAsyncThunk(
   "auth/signUp",
-  async ({ login, email, password }, thunkAPI) => {
+  async ({ login, email, password, avatar }, thunkAPI) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
 
       const user = auth.currentUser;
 
       if (user) {
-        await updateProfile(user, { displayName: login, photoURL, email });
+        await updateProfile(user, {
+          displayName: login,
+          photoURL: avatar,
+          email,
+        });
         console.log("user", user);
 
         const { displayName, uid, photoURL, email } = auth.currentUser;

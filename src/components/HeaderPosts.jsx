@@ -5,13 +5,18 @@ import { useSelector } from "react-redux";
 const HeaderPosts = () => {
   const login = useSelector((state) => state.login);
   const email = useSelector((state) => state.email);
-  console.log(login);
-  console.log(email);
+  const avatar = useSelector((state) => state.avatar);
+  // console.log(login);
+  // console.log(email);
 
   return (
     <View style={styles.wrapperUser}>
       <View style={styles.wrapperAvatar}>
-        <Image source={require("../assets/images/rectangle.jpg")} />
+        {avatar ? (
+          <Image source={{ uri: avatar }} style={styles.avatarImage} />
+        ) : (
+          <Image source={require("../assets/images/defautl.png")} />
+        )}
       </View>
       <View style={styles.wrapperText}>
         <Text style={styles.loginText}>{login}</Text>
@@ -29,6 +34,11 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   wrapperAvatar: {
+    borderRadius: 8,
+  },
+  avatarImage: {
+    width: 40,
+    height: 40,
     borderRadius: 8,
   },
   loginText: {

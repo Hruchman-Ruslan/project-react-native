@@ -5,26 +5,29 @@ import HeaderComments from "../components/HeaderComments";
 import { database } from "../firebase/config";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
-const renderItem = ({ item }) => (
-  <>
+const renderItem = ({ item, avatar }) => {
+  return (
     <View style={styles.wrapper}>
       <View style={styles.wrapperAvatar}>
-        <Image
-          style={styles.avatar}
-          source={require("../assets/images/rectangle.png")}
-        />
+        {avatar ? (
+          <Image source={{ uri: avatar }} style={styles.avatarImage} />
+        ) : (
+          <Image source={require("../assets/images/defautl.png")} />
+        )}
       </View>
       <View style={styles.wrapperText}>
         <Text style={styles.text}>{item.addMessage}</Text>
         <Text style={styles.date}>{item.createdAt}</Text>
       </View>
     </View>
-  </>
-);
+  );
+};
 
 const CommentsScreen = ({ route }) => {
   const { postId, uri } = route.params;
+  const avatar = useSelector((state) => state.avatar);
   console.log("test", postId);
 
   const [getMessage, setGetMessage] = useState([]);
@@ -58,7 +61,7 @@ const CommentsScreen = ({ route }) => {
     <View style={styles.container}>
       <FlatList
         data={getMessage}
-        renderItem={renderItem}
+        renderItem={({ item }) => renderItem({ item, avatar })}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContainer}
@@ -81,6 +84,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: "white",
+  },
+  avatarImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
   },
   footer: {
     marginTop: "auto",

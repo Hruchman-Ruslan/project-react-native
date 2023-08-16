@@ -13,6 +13,7 @@ import { Background } from "../components/Background";
 import { ShowPassword } from "../components/ShowPassword";
 import { useDispatch } from "react-redux";
 import { authSignUpUser } from "../redux/auth/authOperations";
+import * as ImagePicker from "expo-image-picker";
 
 const initialState = {
   login: "",
@@ -23,6 +24,8 @@ const initialState = {
 export default function RegistrationScreen() {
   const [state, setState] = useState(initialState);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
+  const [avatar, setAvatar] = useState("");
+  console.log(avatar);
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -31,8 +34,39 @@ export default function RegistrationScreen() {
     setPasswordVisible(!isPasswordVisible);
   };
 
+  const chooseImage = async () => {
+    try {
+      const permissionResult =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (!permissionResult.granted) {
+        Alert.alert(
+          "Permission Denied",
+          "You need to grant permission to access the media library."
+        );
+        return;
+      }
+
+      const imagePickerResult = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+
+      if (!imagePickerResult.canceled) {
+        if (imagePickerResult.assets.length > 0) {
+          const chosenImage = imagePickerResult.assets[0];
+          setAvatar(chosenImage.uri);
+        }
+      }
+    } catch (error) {
+      Alert.alert("Error", `${error.message}`);
+    }
+  };
+
   const handleClickButton = () => {
-    dispatch(authSignUpUser(state));
+    dispatch(authSignUpUser({ ...state, avatar }));
     setState(initialState);
     navigation.navigate("BottomNavigator");
   };
@@ -45,7 +79,7 @@ export default function RegistrationScreen() {
     <Background>
       <KeyboardWrapper>
         <SafeAreaView style={styles.wrapper}>
-          <AddPhoto />
+          <AddPhoto avatar={avatar} onPress={chooseImage} />
           <Title title={"Registration"} />
 
           <View style={styles.inputWrapper}>
