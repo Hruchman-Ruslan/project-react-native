@@ -36,13 +36,13 @@ export const authLogInUser = createAsyncThunk(
   async ({ email, password }, thunkAPI) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-      console.log("user", user.displayName, user.photoURL);
+      console.log("user", user.displayName, email);
 
-      const { displayName, uid, photoURL, email } = user;
+      const { displayName, uid } = user;
 
       console.log(user);
 
-      return { displayName, uid, photoURL, email };
+      return { displayName, uid, email };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
