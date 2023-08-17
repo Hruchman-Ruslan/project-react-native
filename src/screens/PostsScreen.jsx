@@ -13,6 +13,7 @@ import { database } from "../firebase/config";
 import { useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { useSelector } from "react-redux";
+import { ActivityIndicator } from "react-native";
 
 const renderItem = ({ item, navigation }) => (
   <>
@@ -55,6 +56,7 @@ const renderItem = ({ item, navigation }) => (
 
 const PostsScreen = ({ navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getDataFromFirestore = async () => {
     try {
@@ -69,11 +71,26 @@ const PostsScreen = ({ navigation }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getDataFromFirestore();
-      setUserPosts(data);
+      try {
+        setLoading(true);
+        const data = await getDataFromFirestore();
+        setUserPosts(data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     }
     fetchData();
   }, []);
+
+  if (loading) {
+    return (
+      <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color="#FF6C00" />
+      </View>
+    );
+  }
 
   return (
     <FlatList
