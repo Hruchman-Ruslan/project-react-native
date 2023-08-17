@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Image,
 } from "react-native";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useSelector } from "react-redux";
@@ -26,7 +27,7 @@ const CreatePostsScreen = () => {
   const [location, setLocation] = useState("");
   const [photoTaken, setPhotoTaken] = useState(false);
   const navigation = useNavigation();
-  // const userID = useSelector((state) => state.userID);
+  const userID = useSelector((state) => state.userID);
 
   useEffect(() => {
     (async () => {
@@ -62,6 +63,7 @@ const CreatePostsScreen = () => {
       const downloadURL = await getDownloadURL(storageRef);
 
       const docRef = await addDoc(collection(database, "users"), {
+        userID,
         photo: downloadURL,
         geoLocation,
         title,
@@ -91,13 +93,20 @@ const CreatePostsScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <View style={styles.wrapperCamera}>
-          <Camera style={styles.camera} ref={setCameraRef}>
-            <TouchableOpacity style={styles.wrapperIcon} onPress={isTakePhoto}>
-              <SimpleLineIcons name="camera" size={24} color="#BDBDBD" />
-            </TouchableOpacity>
-          </Camera>
-        </View>
+        {photoTaken ? (
+          <Image style={styles.photo} source={{ uri: photo }} />
+        ) : (
+          <View style={styles.wrapperCamera}>
+            <Camera style={styles.camera} ref={setCameraRef}>
+              <TouchableOpacity
+                style={styles.wrapperIcon}
+                onPress={isTakePhoto}
+              >
+                <SimpleLineIcons name="camera" size={24} color="#BDBDBD" />
+              </TouchableOpacity>
+            </Camera>
+          </View>
+        )}
 
         <View style={styles.wrapperText}>
           <Text style={styles.text}>Upload a photo</Text>
@@ -169,6 +178,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   camera: {
+    height: 240,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  photo: {
     height: 240,
     width: "100%",
     justifyContent: "center",
