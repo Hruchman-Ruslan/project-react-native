@@ -65,13 +65,16 @@ const renderItem = ({ item, navigation }) => {
 
 const ProfileScreen = ({ navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
-  // const userID = useSelector((state) => state.userID);
+  const userID = useSelector((state) => state.userID);
 
   const getDataFromFirestore = async () => {
     try {
       const snapshot = await getDocs(collection(database, "users"));
       const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      return data;
+
+      const userPosts = data.filter((item) => item.userId === userID);
+
+      return userPosts;
     } catch (error) {
       console.log(error);
       throw error;
