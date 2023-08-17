@@ -54,6 +54,7 @@ export default function LoginScreen() {
             <Input
               placeholder={"Password"}
               secureTextEntry={!isPasswordVisible}
+              autoCapitalize="none"
               onChangeText={(value) =>
                 setState((prevState) => ({ ...prevState, password: value }))
               }

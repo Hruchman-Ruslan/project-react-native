@@ -6,6 +6,7 @@ export const Input = ({
   secureTextEntry,
   value,
   onChangeText,
+  autoCapitalize,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -30,6 +31,7 @@ export const Input = ({
       secureTextEntry={secureTextEntry}
       value={value}
       onChangeText={onChangeText}
+      autoCapitalize={autoCapitalize}
     />
   );
 };

@@ -25,7 +25,6 @@ export default function RegistrationScreen() {
   const [state, setState] = useState(initialState);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [avatar, setAvatar] = useState("");
-  console.log(avatar);
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -98,6 +97,7 @@ export default function RegistrationScreen() {
             <Input
               placeholder={"Password"}
               secureTextEntry={!isPasswordVisible}
+              autoCapitalize="none"
               onChangeText={(value) =>
                 setState((prevState) => ({
                   ...prevState,

@@ -42,11 +42,11 @@ export const authLogInUser = createAsyncThunk(
       const { user } = await signInWithEmailAndPassword(auth, email, password);
       console.log("user", user.displayName, email);
 
-      const { displayName, uid } = user;
+      const { displayName, uid, photoURL } = user;
 
       console.log(user);
 
-      return { displayName, uid, email };
+      return { displayName, uid, email, photoURL };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
