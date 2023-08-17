@@ -15,7 +15,10 @@ const HeaderPosts = () => {
         {avatar ? (
           <Image source={{ uri: avatar }} style={styles.avatarImage} />
         ) : (
-          <Image source={require("../assets/images/defautl.png")} />
+          <Image
+            source={require("../assets/images/defautl.png")}
+            style={styles.defaultImage}
+          />
         )}
       </View>
       <View style={styles.wrapperText}>
@@ -37,6 +40,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   avatarImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+  },
+  defaultImage: {
     width: 40,
     height: 40,
     borderRadius: 8,
