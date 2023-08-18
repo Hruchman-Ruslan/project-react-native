@@ -1,12 +1,15 @@
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
+import { useSelector } from "react-redux";
+
+import "react-native-gesture-handler";
+
 import RegistrationScreen from "../screens/RegistrationScreen";
 import LoginScreen from "../screens/LoginScreen";
 import BottomNavigator from "./BottomNavigator";
 import CommentsScreen from "../screens/CommentsScreen";
 import MapScreen from "../screens/MapScreen";
-import { useSelector } from "react-redux";
 
 const MainStack = createStackNavigator();
 
@@ -18,13 +21,20 @@ const MainNavigator = () => {
     <NavigationContainer>
       <MainStack.Navigator initialRouteName={initialRouteName}>
         <MainStack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+          initialParams={{ isAuth }}
+        />
+        <MainStack.Screen
           name="RegistrationScreen"
           component={RegistrationScreen}
           options={{ headerShown: false }}
+          initialParams={{ isAuth }}
         />
         <MainStack.Screen
-          name="LoginScreen"
-          component={LoginScreen}
+          name="BottomNavigator"
+          component={BottomNavigator}
           options={{ headerShown: false }}
         />
         <MainStack.Screen
@@ -42,11 +52,6 @@ const MainNavigator = () => {
             headerTitle: "Map Screen",
             headerTitleAlign: "center",
           }}
-        />
-        <MainStack.Screen
-          name="BottomNavigator"
-          component={BottomNavigator}
-          options={{ headerShown: false }}
         />
       </MainStack.Navigator>
     </NavigationContainer>
