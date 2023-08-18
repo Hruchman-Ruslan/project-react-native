@@ -21,6 +21,8 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useSelector } from "react-redux";
 
 const CreatePostsScreen = () => {
+  const userID = useSelector((state) => state.userID);
+  const login = useSelector((state) => state.login);
   const [cameraRef, setCameraRef] = useState(null);
   const [photo, setPhoto] = useState("");
   const [geoLocation, setGeoLocation] = useState({ latitude: 0, longitude: 0 });
@@ -28,7 +30,7 @@ const CreatePostsScreen = () => {
   const [location, setLocation] = useState("");
   const [photoTaken, setPhotoTaken] = useState(false);
   const navigation = useNavigation();
-  const userID = useSelector((state) => state.userID);
+
   const [isTakingPhoto, setIsTakingPhoto] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
 
@@ -71,10 +73,14 @@ const CreatePostsScreen = () => {
 
       const docRef = await addDoc(collection(database, "users"), {
         userID,
+        login,
         photo: downloadURL,
         geoLocation,
         title,
         location,
+        commentCounter: 0,
+        likesCounter: 0,
+        likers: [userID],
       });
 
       console.log("Document written with ID: ", docRef.id);

@@ -3,9 +3,13 @@ import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { database } from "../firebase/config";
+import { useSelector } from "react-redux";
 
 const CommentInput = ({ postId }) => {
   const [addMessage, setAddMessage] = useState("");
+  const avatar = useSelector((state) => state.avatar);
+  const userID = useSelector((state) => state.userID);
+
   console.log("id", postId);
 
   const postMessage = async () => {
@@ -17,6 +21,8 @@ const CommentInput = ({ postId }) => {
         {
           addMessage,
           createdAt,
+          userID,
+          avatar,
         }
       );
 
@@ -33,7 +39,7 @@ const CommentInput = ({ postId }) => {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View style={styles.wrapperInput}>
       <TextInput
         style={styles.input}
         placeholder={"Comment..."}
@@ -48,7 +54,7 @@ const CommentInput = ({ postId }) => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
+  wrapperInput: {
     width: "100%",
 
     justifyContent: "center",

@@ -11,7 +11,7 @@ import { Feather } from "@expo/vector-icons";
 import HeaderPosts from "../components/HeaderPosts";
 import { database } from "../firebase/config";
 import { useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { ActivityIndicator } from "react-native";
 
@@ -34,7 +34,7 @@ const renderItem = ({ item, navigation }) => (
         }
       >
         <Feather name="message-circle" size={24} color="#BDBDBD" />
-        <Text style={styles.feedbackNumber}>0</Text>
+        <Text style={styles.feedbackNumber}>{item.commentCounter}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.wrapperLocation}
@@ -56,41 +56,35 @@ const renderItem = ({ item, navigation }) => (
 
 const PostsScreen = ({ navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
+  console.log(userPosts);
   const [loading, setLoading] = useState(true);
 
-  const getDataFromFirestore = async () => {
-    try {
-      const snapshot = await getDocs(collection(database, "users"));
-      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      return data;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
+  const userID = useSelector((state) => state.userID);
+  const login = useSelector((state) => state.login);
+  const avatar = useSelector((state) => state.avatar);
+  const email = useSelector((state) => state.email);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        setLoading(true);
-        const data = await getDataFromFirestore();
-        setUserPosts(data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
+    const queryObj = query(collection(database, "users"));
+    const unsubscribe = onSnapshot(queryObj, (querySnapshot) => {
+      const postsList = [];
+      querySnapshot.forEach((doc) =>
+        postsList.push({ ...doc.data(), id: doc.id })
+      );
+      setUserPosts(postsList);
+    });
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
-  if (loading) {
-    return (
-      <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-        <ActivityIndicator size="large" color="#FF6C00" />
-      </View>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+  //       <ActivityIndicator size="large" color="#FF6C00" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <FlatList

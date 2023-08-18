@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import {
   StyleSheet,
   Text,
@@ -36,7 +42,7 @@ const renderItem = ({ item, navigation }) => {
             }
           >
             <Feather name="message-circle" size={24} color="#FF6C00" />
-            <Text style={styles.feedbackNumber}>0</Text>
+            <Text style={styles.feedbackNumber}>{item.commentCounter}</Text>
           </TouchableOpacity>
           <View style={styles.wrapperPosts}>
             <Feather name="thumbs-up" size={24} color="#FF6C00" />
@@ -65,29 +71,26 @@ const renderItem = ({ item, navigation }) => {
 
 const ProfileScreen = ({ navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
+  const [avatar, setAvatar] = useState("");
   console.log("post", userPosts);
   const userID = useSelector((state) => state.userID);
   console.log("userID", userID);
 
-  const getDataFromFirestore = async () => {
-    try {
-      const snapshot = await getDocs(collection(database, "users"));
-      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-
-      const userPosts = data.filter((item) => item.userID === userID);
-      return userPosts;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
-
   useEffect(() => {
-    async function fetchData() {
-      const data = await getDataFromFirestore();
-      setUserPosts(data);
-    }
-    fetchData();
+    const queryObj = query(
+      collection(database, "users"),
+      where("userID", "==", userID)
+    );
+    const unsubscribe = onSnapshot(queryObj, (querySnapshot) => {
+      const postsList = [];
+      querySnapshot.forEach((doc) =>
+        postsList.push({ ...doc.data(), id: doc.id })
+      );
+      setUserPosts(postsList);
+    });
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
