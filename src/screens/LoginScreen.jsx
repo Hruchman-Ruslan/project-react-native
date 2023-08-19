@@ -30,6 +30,11 @@ export default function LoginScreen() {
   };
 
   const handleClickButton = () => {
+    if (!state.email || !state.password) {
+      Alert.alert("Please fill in both email and password fields.");
+      return;
+    }
+
     dispatch(authLogInUser(state));
     navigation.navigate("BottomNavigator");
   };
