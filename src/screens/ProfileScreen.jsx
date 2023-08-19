@@ -90,7 +90,7 @@ const renderItem = ({ item, navigation, updateLikes }) => {
 
 const ProfileScreen = ({ navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
-  const [avatar, setAvatar] = useState("");
+
   console.log("post", userPosts);
   const userID = useSelector((state) => state.userID);
   console.log("userID", userID);

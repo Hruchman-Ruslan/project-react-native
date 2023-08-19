@@ -25,7 +25,7 @@ const renderItem = ({ item, avatar }) => {
     <View style={styles.wrapper}>
       <View style={styles.wrapperAvatar}>
         {avatar ? (
-          <Image source={{ uri: avatar }} style={styles.avatarImage} />
+          <Image source={{ uri: item.avatar }} style={styles.avatarImage} />
         ) : (
           <Image
             source={require("../assets/images/defautl.png")}
@@ -45,6 +45,7 @@ const CommentsScreen = ({ route }) => {
   const { postId, uri } = route.params;
   const avatar = useSelector((state) => state.avatar);
   console.log("test", postId);
+  console.log("avatar", avatar);
 
   const [addMessage, setAddMessage] = useState("");
   const userID = useSelector((state) => state.userID);
