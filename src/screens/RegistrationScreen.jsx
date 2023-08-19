@@ -14,6 +14,7 @@ import { ShowPassword } from "../components/ShowPassword";
 import { useDispatch } from "react-redux";
 import { authSignUpUser } from "../redux/auth/authOperations";
 import * as ImagePicker from "expo-image-picker";
+import { Alert } from "react-native";
 
 const initialState = {
   login: "",
@@ -65,6 +66,11 @@ export default function RegistrationScreen() {
   };
 
   const handleClickButton = () => {
+    if (!state.email || !state.password || !state.login) {
+      Alert.alert("Fill in all fields please!");
+      return;
+    }
+
     dispatch(authSignUpUser({ ...state, avatar }));
     setState(initialState);
     navigation.navigate("BottomNavigator");
