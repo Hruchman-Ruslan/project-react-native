@@ -14,15 +14,19 @@ import {
 } from "firebase/firestore";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { KeyboardAvoidingView } from "react-native";
-import { Platform } from "react-native";
 import { TextInput } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-const renderItem = ({ item, avatar }) => {
+const renderItem = ({ item, avatar, userID }) => {
   return (
-    <View style={styles.wrapper}>
+    <View
+      style={
+        userID === item.authorCommentId
+          ? { ...styles.wrapper, flexDirection: "row-reverse" }
+          : { ...styles.wrapper, flexDirection: "row" }
+      }
+    >
       <View style={styles.wrapperAvatar}>
         {avatar ? (
           <Image source={{ uri: item.avatar }} style={styles.avatarImage} />
@@ -35,14 +39,24 @@ const renderItem = ({ item, avatar }) => {
       </View>
       <View style={styles.wrapperText}>
         <Text style={styles.text}>{item.addMessage}</Text>
-        <Text style={styles.date}>{item.createdAt}</Text>
+        <Text
+          style={
+            userID === item.authorCommentId
+              ? { ...styles.text, textAlign: "left" }
+              : { ...styles.text, textAlign: "right" }
+          }
+        >
+          {item.createdAt}
+        </Text>
       </View>
     </View>
   );
 };
 
 const CommentsScreen = ({ route }) => {
-  const { postId, uri } = route.params;
+  const { postId, uri, uid, autorPostId } = route.params;
+  console.log("uid", uid);
+  console.log("autorPostId", autorPostId);
   const avatar = useSelector((state) => state.avatar);
   console.log("test", postId);
   console.log("avatar", avatar);
@@ -83,6 +97,7 @@ const CommentsScreen = ({ route }) => {
           addMessage,
           createdAt,
           userID,
+          authorCommentId: userID,
           avatar,
         }
       );
@@ -103,7 +118,7 @@ const CommentsScreen = ({ route }) => {
     <View style={styles.container}>
       <FlatList
         data={getMessage}
-        renderItem={({ item }) => renderItem({ item, avatar })}
+        renderItem={({ item }) => renderItem({ item, avatar, userID })}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContainer}
@@ -179,8 +194,6 @@ const styles = StyleSheet.create({
   },
   date: {
     color: "#BDBDBD",
-    textAlign: "right",
-    // textAlign: "left",
     fontFamily: "rb-regular",
     fontSize: 10,
     lineHeight: 14,

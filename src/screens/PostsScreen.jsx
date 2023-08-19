@@ -30,6 +30,7 @@ const renderItem = ({ item, navigation }) => (
           navigation.navigate("CommentsScreen", {
             postId: item.id,
             uri: item.photo,
+            autorPostId: item.userID,
           })
         }
       >

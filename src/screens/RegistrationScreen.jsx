@@ -21,6 +21,8 @@ import * as ImagePicker from "expo-image-picker";
 import { Alert } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { storage } from "../firebase/config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const validationSchema = Yup.object().shape({
   login: Yup.string().required("Login is required"),
@@ -50,44 +52,32 @@ export default function RegistrationScreen() {
   };
 
   const chooseImage = async () => {
-    try {
-      const permissionResult =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
 
-      if (!permissionResult.granted) {
-        Alert.alert(
-          "Permission Denied",
-          "You need to grant permission to access the media library."
-        );
-        return;
-      }
-
-      const imagePickerResult = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 1,
-      });
-
-      if (!imagePickerResult.canceled) {
-        if (imagePickerResult.assets.length > 0) {
-          const chosenImage = imagePickerResult.assets[0];
-          setAvatar(chosenImage.uri);
-        }
-      }
-    } catch (error) {
-      Alert.alert("Error", `${error.message}`);
+    if (!result.canceled) {
+      setAvatar(result.assets[0].uri);
     }
   };
-  //   if (!state.email || !state.password || !state.login) {
-  //     Alert.alert("Fill in all fields please!");
-  //     return;
-  //   }
 
-  //   dispatch(authSignUpUser({ ...state, avatar }));
-  //   setState(initialState);
-  //   navigation.navigate("BottomNavigator");
-  // };
+  const uploadPhotoToServer = async () => {
+    let imageRef;
+
+    if (avatar) {
+      const response = await fetch(avatar);
+      const file = await response.blob();
+      const uniqueAvatarId = Date.now().toString();
+      imageRef = ref(storage, `userAvatars/${uniqueAvatarId}`);
+      await uploadBytes(imageRef, file);
+    }
+
+    const processedPhoto = await getDownloadURL(imageRef);
+    return processedPhoto;
+  };
 
   const handleClickOnText = () => {
     navigation.navigate("LoginScreen");
@@ -109,9 +99,10 @@ export default function RegistrationScreen() {
     <Formik
       initialValues={initialState}
       validationSchema={validationSchema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={async (values, { setSubmitting }) => {
         try {
-          dispatch(authSignUpUser({ ...values, avatar }));
+          const photo = await uploadPhotoToServer();
+          dispatch(authSignUpUser({ ...values, avatar: photo }));
           setState(initialState);
           navigation.navigate("BottomNavigator");
         } catch (error) {
