@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput, Text } from "react-native";
 
 export const Input = ({
   placeholder,
@@ -9,6 +9,7 @@ export const Input = ({
   autoCapitalize,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const [error, setError] = useState("");
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -18,21 +19,31 @@ export const Input = ({
     setIsFocused(false);
   };
 
+  const handleTextChange = (text) => {
+    onChangeText(text);
+    setError(
+      text.length < 6 ? "Field is required and minimum 6 characters" : ""
+    );
+  };
+
   const inputStyle = isFocused
     ? [styles.input, styles.inputFocus]
     : styles.input;
 
   return (
-    <TextInput
-      style={inputStyle}
-      placeholder={placeholder}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-      secureTextEntry={secureTextEntry}
-      value={value}
-      onChangeText={onChangeText}
-      autoCapitalize={autoCapitalize}
-    />
+    <React.Fragment>
+      <TextInput
+        style={inputStyle}
+        placeholder={placeholder}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        secureTextEntry={secureTextEntry}
+        value={value}
+        onChangeText={handleTextChange}
+        autoCapitalize={autoCapitalize}
+      />
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
+    </React.Fragment>
   );
 };
 
@@ -53,5 +64,13 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderWidth: 1,
     borderColor: "#FF6C00",
+  },
+  errorText: {
+    color: "#FF6C00",
+    marginTop: 5,
+    fontSize: 16,
+    fontFamily: "rb-regular",
+    textAlign: "center",
+    fontWeight: "700",
   },
 });
