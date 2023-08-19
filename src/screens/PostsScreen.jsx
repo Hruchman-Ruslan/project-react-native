@@ -33,7 +33,14 @@ const renderItem = ({ item, navigation }) => (
           })
         }
       >
-        <Feather name="message-circle" size={24} color="#BDBDBD" />
+        <Feather
+          name="message-circle"
+          size={24}
+          color={item.commentCounter > 0 ? "#FF6C00" : "#BDBDBD"}
+          style={{
+            transform: item.commentCounter > 0 ? [{ rotate: "280deg" }] : [],
+          }}
+        />
         <Text style={styles.feedbackNumber}>{item.commentCounter}</Text>
       </TouchableOpacity>
       <TouchableOpacity

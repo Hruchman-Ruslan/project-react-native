@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import {
   collection,
+  doc,
   getDocs,
   onSnapshot,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import {
@@ -21,7 +23,7 @@ import { database } from "../firebase/config";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-const renderItem = ({ item, navigation }) => {
+const renderItem = ({ item, navigation, updateLikes }) => {
   return (
     <>
       <View style={styles.wrapperImage}>
@@ -41,13 +43,30 @@ const renderItem = ({ item, navigation }) => {
               })
             }
           >
-            <Feather name="message-circle" size={24} color="#FF6C00" />
+            <Feather
+              name="message-circle"
+              size={24}
+              color={item.commentCounter > 0 ? "#FF6C00" : "#BDBDBD"}
+              style={{
+                transform:
+                  item.commentCounter > 0 ? [{ rotate: "280deg" }] : [],
+              }}
+            />
             <Text style={styles.feedbackNumber}>{item.commentCounter}</Text>
           </TouchableOpacity>
-          <View style={styles.wrapperPosts}>
-            <Feather name="thumbs-up" size={24} color="#FF6C00" />
-            <Text style={styles.feedbackNumber}>0</Text>
-          </View>
+          <TouchableOpacity
+            style={styles.wrapperPosts}
+            onPress={() => {
+              updateLikes(item.likes + 1, item.id);
+            }}
+          >
+            <Feather
+              name="thumbs-up"
+              size={24}
+              color={item.likes > 0 ? "#FF6C00" : "#BDBDBD"}
+            />
+            <Text style={styles.feedbackNumber}>{item.likes}</Text>
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity
@@ -93,6 +112,17 @@ const ProfileScreen = ({ navigation }) => {
     };
   }, []);
 
+  const updateLikes = async (likes, id) => {
+    try {
+      const likeRef = doc(database, "users", id);
+      await updateDoc(likeRef, {
+        likes: likes,
+      });
+    } catch (error) {
+      console.log("err", error.message);
+    }
+  };
+
   return (
     <ImageBackground
       source={require("../assets/images/bg.png")}
@@ -101,7 +131,7 @@ const ProfileScreen = ({ navigation }) => {
     >
       <FlatList
         data={userPosts}
-        renderItem={({ item }) => renderItem({ item, navigation })}
+        renderItem={({ item }) => renderItem({ item, navigation, updateLikes })}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -224,7 +254,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   feedbackNumber: {
-    color: "#BDBDBD",
+    color: "#212121",
     fontFamily: "rb-regular",
     fontSize: 16,
     lineHeight: 24,

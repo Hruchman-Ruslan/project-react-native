@@ -79,8 +79,7 @@ const CreatePostsScreen = () => {
         title,
         location,
         commentCounter: 0,
-        likesCounter: 0,
-        likers: [userID],
+        likes: 0,
       });
 
       console.log("Document written with ID: ", docRef.id);
