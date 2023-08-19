@@ -63,7 +63,7 @@ const renderItem = ({ item, navigation }) => (
 
 const PostsScreen = ({ navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
-  console.log(userPosts);
+  // console.log(userPosts);
   const [loading, setLoading] = useState(true);
 
   const userID = useSelector((state) => state.userID);
