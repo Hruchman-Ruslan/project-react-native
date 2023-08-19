@@ -32,6 +32,7 @@ export const Input = ({
 
   return (
     <React.Fragment>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
       <TextInput
         style={inputStyle}
         placeholder={placeholder}
@@ -42,7 +43,6 @@ export const Input = ({
         onChangeText={handleTextChange}
         autoCapitalize={autoCapitalize}
       />
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
     </React.Fragment>
   );
 };
