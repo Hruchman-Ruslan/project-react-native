@@ -40,11 +40,12 @@ export const authLogInUser = createAsyncThunk(
   async ({ email, password }, thunkAPI) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-      console.log("user", user.displayName, email);
+
+      if (!user) {
+        return thunkAPI.rejectWithValue("User not found");
+      }
 
       const { displayName, uid, photoURL } = user;
-
-      console.log(user);
 
       return { displayName, uid, email, photoURL };
     } catch (error) {

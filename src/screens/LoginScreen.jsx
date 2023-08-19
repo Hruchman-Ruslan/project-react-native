@@ -29,14 +29,24 @@ export default function LoginScreen() {
     setPasswordVisible(!isPasswordVisible);
   };
 
-  const handleClickButton = () => {
+  const handleClickButton = async () => {
     if (!state.email || !state.password) {
       Alert.alert("Fill in all fields please!");
       return;
     }
 
-    dispatch(authLogInUser(state));
-    navigation.navigate("BottomNavigator");
+    try {
+      const resultAction = await dispatch(authLogInUser(state));
+
+      if (authLogInUser.rejected.match(resultAction)) {
+        Alert.alert("User not found. Please check your credentials.");
+        return;
+      }
+
+      navigation.navigate("BottomNavigator");
+    } catch (error) {
+      Alert.alert("An error occurred. Please try again later.");
+    }
   };
 
   const handleClickOnText = () => {
