@@ -12,6 +12,8 @@ const MapScreen = ({ route }) => {
         region={{
           latitude: location.latitude,
           longitude: location.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
         }}
         mapType="standard"
         minZoomLevel={15}
