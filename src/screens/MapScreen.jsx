@@ -12,11 +12,11 @@ const MapScreen = ({ route }) => {
         region={{
           latitude: location.latitude,
           longitude: location.longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
         }}
         mapType="standard"
-        minZoomLevel={15}
+        minZoomLevel={3}
         onMapReady={() => console.log("Map is ready")}
         onRegionChange={() => console.log("Region change")}
       >
