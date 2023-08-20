@@ -19,6 +19,10 @@ import { useDispatch } from "react-redux";
 import { authLogInUser } from "../redux/auth/authOperations";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { TouchableWithoutFeedback } from "react-native";
+import { Keyboard } from "react-native";
+import { KeyboardAvoidingView } from "react-native";
+import { Platform } from "react-native";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -64,7 +68,7 @@ export default function LoginScreen() {
     <Formik
       initialValues={initialState}
       validationSchema={validationSchema}
-      onSubmit={async (values, { setSubmitting }) => {
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
         try {
           const resultAction = await dispatch(authLogInUser(values));
 
@@ -72,6 +76,7 @@ export default function LoginScreen() {
             Alert.alert("User not found. Please check your credentials.");
           } else {
             navigation.navigate("BottomNavigator");
+            resetForm();
           }
         } catch (error) {
           Alert.alert("An error occurred. Please try again later.");
@@ -88,70 +93,82 @@ export default function LoginScreen() {
         touched,
         isSubmitting,
       }) => (
-        <Background>
-          <KeyboardWrapper>
-            <SafeAreaView style={styles.wrapper}>
-              <Title title={"Sign in"} />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <Background>
+            <KeyboardAvoidingView
+              behavior={Platform.OS == "ios" ? "padding" : "height"}
+              style={styles.wrapperKeyboard}
+            >
+              <SafeAreaView style={styles.wrapper}>
+                <Title title={"Sign in"} />
 
-              <View style={styles.inputWrapper}>
-                {touched.email && errors.email && (
-                  <Text style={styles.errorTextEmail}>{errors.email}</Text>
-                )}
-                <TextInput
-                  style={inputStyle}
-                  onFocus={handleFocusInput}
-                  onBlur={(handleBlur("email"), handleBlurInput)}
-                  placeholder={"Email"}
-                  onChangeText={handleChange("email")}
-                  value={values.email}
-                  name="email"
+                <View
+                  style={{ ...styles.form, paddingBottom: isFocused ? 0 : 20 }}
+                >
+                  {touched.email && errors.email && (
+                    <Text style={styles.errorTextEmail}>{errors.email}</Text>
+                  )}
+                  <TextInput
+                    style={inputStyle}
+                    onFocus={handleFocusInput}
+                    onBlur={(handleBlur("email"), handleBlurInput)}
+                    placeholder={"Email"}
+                    onChangeText={handleChange("email")}
+                    value={values.email}
+                    name="email"
+                  />
+
+                  {touched.password && errors.password && (
+                    <Text style={styles.errorTextPassword}>
+                      {errors.password}
+                    </Text>
+                  )}
+                  <TextInput
+                    style={inputStyle}
+                    onFocus={handleFocusInput}
+                    onBlur={(handleBlur("password"), handleBlurInput)}
+                    placeholder={"Password"}
+                    secureTextEntry={!isPasswordVisible}
+                    autoCapitalize="none"
+                    onChangeText={handleChange("password")}
+                    value={values.password}
+                    name="password"
+                  />
+
+                  <ShowPassword
+                    isPasswordVisible={isPasswordVisible}
+                    onTogglePassword={handleTogglePassword}
+                  />
+                </View>
+
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handleSubmit}
+                  disabled={isSubmitting}
+                >
+                  <Text style={styles.buttonText}>Sign In</Text>
+                </TouchableOpacity>
+
+                <Link
+                  title={"Don't have an account? Register"}
+                  handleClickOnText={handleClickOnText}
                 />
+              </SafeAreaView>
 
-                {touched.password && errors.password && (
-                  <Text style={styles.errorTextPassword}>
-                    {errors.password}
-                  </Text>
-                )}
-                <TextInput
-                  style={inputStyle}
-                  onFocus={handleFocusInput}
-                  onBlur={(handleBlur("password"), handleBlurInput)}
-                  placeholder={"Password"}
-                  secureTextEntry={!isPasswordVisible}
-                  autoCapitalize="none"
-                  onChangeText={handleChange("password")}
-                  value={values.password}
-                  name="password"
-                />
-
-                <ShowPassword
-                  isPasswordVisible={isPasswordVisible}
-                  onTogglePassword={handleTogglePassword}
-                />
-              </View>
-
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handleSubmit}
-                disabled={isSubmitting}
-              >
-                <Text style={styles.buttonText}>Sign In</Text>
-              </TouchableOpacity>
-
-              <Link
-                title={"Don't have an account? Register"}
-                handleClickOnText={handleClickOnText}
-              />
-            </SafeAreaView>
-          </KeyboardWrapper>
-          <StatusBar style="auto" />
-        </Background>
+              <StatusBar style="auto" />
+            </KeyboardAvoidingView>
+          </Background>
+        </TouchableWithoutFeedback>
       )}
     </Formik>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapperKeyboard: {
+    width: "100%",
+    justifyContent: "center",
+  },
   wrapper: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -161,14 +178,13 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     alignItems: "center",
   },
-  inputWrapper: {
+  form: {
     marginTop: 10,
     width: "100%",
     marginBottom: 27,
     gap: 16,
   },
   input: {
-    position: "relative",
     height: 50,
     borderRadius: 8,
     paddingLeft: 16,

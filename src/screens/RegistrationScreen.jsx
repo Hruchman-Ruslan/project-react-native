@@ -100,12 +100,13 @@ export default function RegistrationScreen() {
     <Formik
       initialValues={initialState}
       validationSchema={validationSchema}
-      onSubmit={async (values, { setSubmitting }) => {
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
         try {
           const photo = await uploadPhotoToServer();
           dispatch(authSignUpUser({ ...values, avatar: photo }));
           setState(initialState);
           navigation.navigate("BottomNavigator");
+          resetForm();
         } catch (error) {
           Alert.alert("An error occurred. Please try again later.");
         }

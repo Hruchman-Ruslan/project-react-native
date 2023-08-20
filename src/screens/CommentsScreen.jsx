@@ -56,9 +56,9 @@ const renderItem = ({ item, avatar, userID }) => {
 };
 
 const CommentsScreen = ({ route }) => {
-  const { postId, uri, uid, autorPostId } = route.params;
+  const { postId, uri, uid, authorPostId } = route.params;
   console.log("uid", uid);
-  console.log("autorPostId", autorPostId);
+  console.log("authorPostId", authorPostId);
   const avatar = useSelector((state) => state.avatar);
   console.log("test", postId);
   console.log("avatar", avatar);

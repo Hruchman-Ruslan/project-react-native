@@ -11,16 +11,9 @@ import { useState } from "react";
 
 const Tab = createBottomTabNavigator();
 
-const initialState = {
-  login: "",
-  email: "",
-  password: "",
-};
-
 const BottomNavigator = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [state, setState] = useState(initialState);
 
   return (
     <Tab.Navigator
@@ -64,7 +57,6 @@ const BottomNavigator = () => {
                 color="#BDBDBD"
                 onPress={() => {
                   dispatch(authSignOutUser());
-                  setState(initialState);
                   navigation.navigate("LoginScreen");
                 }}
               />
