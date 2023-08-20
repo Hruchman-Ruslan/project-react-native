@@ -73,10 +73,11 @@ export default function RegistrationScreen() {
       const uniqueAvatarId = Date.now().toString();
       imageRef = ref(storage, `userAvatars/${uniqueAvatarId}`);
       await uploadBytes(imageRef, file);
+      const processedPhoto = await getDownloadURL(imageRef);
+      return processedPhoto;
     }
 
-    const processedPhoto = await getDownloadURL(imageRef);
-    return processedPhoto;
+    return null;
   };
 
   const handleClickOnText = () => {

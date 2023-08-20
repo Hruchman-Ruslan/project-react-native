@@ -7,12 +7,20 @@ import { SimpleLineIcons, Feather, Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity, View } from "react-native";
 import { authSignOutUser } from "../redux/auth/authOperations";
 import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 const Tab = createBottomTabNavigator();
+
+const initialState = {
+  login: "",
+  email: "",
+  password: "",
+};
 
 const BottomNavigator = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [state, setState] = useState(initialState);
 
   return (
     <Tab.Navigator
@@ -56,6 +64,7 @@ const BottomNavigator = () => {
                 color="#BDBDBD"
                 onPress={() => {
                   dispatch(authSignOutUser());
+                  setState(initialState);
                   navigation.navigate("LoginScreen");
                 }}
               />

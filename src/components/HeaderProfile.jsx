@@ -4,10 +4,18 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { EvilIcons, Feather } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { authSignOutUser } from "../redux/auth/authOperations";
+import { useState } from "react";
+
+const initialState = {
+  login: "",
+  email: "",
+  password: "",
+};
 
 const HeaderProfile = () => {
   const login = useSelector((state) => state.login);
   const avatar = useSelector((state) => state.avatar);
+  const [state, setState] = useState(initialState);
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -27,6 +35,7 @@ const HeaderProfile = () => {
           style={styles.wrapperIconLogOut}
           onPress={() => {
             dispatch(authSignOutUser());
+            setState(initialState);
             navigation.navigate("LoginScreen");
           }}
         >

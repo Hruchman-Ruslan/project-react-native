@@ -9,6 +9,7 @@ import {
   doc,
   getDocs,
   onSnapshot,
+  orderBy,
   query,
   updateDoc,
 } from "firebase/firestore";
@@ -17,6 +18,7 @@ import { useSelector } from "react-redux";
 import { TextInput } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import date from "date-and-time";
 
 const renderItem = ({ item, avatar, userID }) => {
   return (
@@ -46,7 +48,7 @@ const renderItem = ({ item, avatar, userID }) => {
               : { ...styles.text, textAlign: "right" }
           }
         >
-          {item.createdAt}
+          {item.time}
         </Text>
       </View>
     </View>
@@ -69,33 +71,34 @@ const CommentsScreen = ({ route }) => {
   const [getMessage, setGetMessage] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      const queryObj = query(collection(database, "users", postId, "comments"));
-      const commentRef = doc(database, "users", postId);
-      const unsubscribe = onSnapshot(queryObj, (querySnapshot) => {
-        const commentsList = [];
-        querySnapshot.forEach((doc) =>
-          commentsList.push({ ...doc.data(), id: doc.id })
-        );
-        updateDoc(commentRef, { commentCounter: commentsList.length });
-        setGetMessage(commentsList);
-      });
+    const queryObj = query(
+      collection(database, "users", postId, "comments"),
+      orderBy("time")
+    );
+    const commentRef = doc(database, "users", postId);
+    const unsubscribe = onSnapshot(queryObj, (querySnapshot) => {
+      const commentsList = [];
+      querySnapshot.forEach((doc) =>
+        commentsList.push({ ...doc.data(), id: doc.id })
+      );
+      updateDoc(commentRef, { commentCounter: commentsList.length });
+      setGetMessage(commentsList);
+    });
 
-      return () => {
-        unsubscribe();
-      };
-    })();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const postMessage = async () => {
     try {
-      const createdAt = new Date().toLocaleString();
+      const time = date.format(new Date(), "D MMMM YYYY | HH:mm");
 
       const docRef = await addDoc(
         collection(database, "users", postId, "comments"),
         {
           addMessage,
-          createdAt,
+          time,
           userID,
           authorCommentId: userID,
           avatar,
@@ -110,6 +113,10 @@ const CommentsScreen = ({ route }) => {
   };
 
   const handleSubmit = async () => {
+    if (!addMessage.trim()) {
+      return;
+    }
+
     await postMessage();
     setAddMessage("");
   };
